@@ -36,10 +36,124 @@
  * Created on March 2, 2015, 3:42 PM
  */
 
-#ifndef SINGLETON_H
-#define	SINGLETON_H
+#ifndef SINGLETON_H_20150312
+#define	SINGLETON_H_20150312
 
+#include <functional>
+#include <memory>
+#include <sstream>
+#include <stdexcept>
+#include <typeinfo>
+#include <type_traits>
 
+/**
+ * @brief Main namespace of the library
+ */
+namespace mwheel {
 
-#endif	/* SINGLETON_H */
+/**
+ * @brief Ensures a class only has one instance, 
+ * and provides a global point of access to it
+ * 
+ * @tparam T class that should have a single instance
+ */
+template< class T>
+class Singleton {
+public:
+  /**
+   * @brief Exception thrown when the creator was not set
+   */
+  class CreatorNotSet : public std::runtime_error{   
+    using std::runtime_error::runtime_error;
+  };  
+  /// Type of the singleton creator  
+  using creator_type = std::function< std::shared_ptr<T> (void) >;
+
+  /**
+   * @brief Sets the creator that will be used to construct the single instance
+   * 
+   * @param[in] creator anything that can bind to creator_type
+   */
+  template<class U>
+  static void set_creator(U creator) {
+    m_creator = creator;
+  }
+
+  /**
+   * @brief Returns the single instance of T
+   * 
+   * @param[in] reset if true resets the instance state 
+   * performing a call to the creator
+   * 
+   * @return single instance of T
+   */
+  static T& get_instance(bool reset = false) {
+    static auto pnt = std::shared_ptr<T>(nullptr);
+    if (!pnt || reset) {
+      check_creator();      
+      pnt = m_creator();
+    }
+    return *pnt;
+  }
+
+private:
+  
+  Singleton() = delete;  
+  Singleton(const Singleton&) = delete;
+  
+  /**
+   * @brief Checks if the creator is set to a valid value
+   * 
+   * @throw CreatorNotSet creator was not set to a valid value
+   */
+  static void check_creator() {
+    if ( m_creator == nullptr ) {
+      // Using auto with an std::stringstream is a PITA!
+      std::stringstream estream;
+      estream << "ERROR :  in Singleton " << typeid(Singleton).name() << std::endl;
+      estream << "\tcreator not set" << std::endl;
+      throw CreatorNotSet( estream.str() );
+    }
+  }
+  static creator_type m_creator;
+};
+
+namespace {
+
+/**
+ * @brief If the object is default constructible, initializes the creator
+ * with the default constructor
+ * 
+ * @return creator object
+ */
+template< class T>
+typename std::enable_if< std::is_default_constructible<T>::value, typename Singleton<T>::creator_type >::type
+initialize_creator() {
+  return [] {
+    return std::make_shared<T>();
+  };
+}
+
+/**
+ * @brief If the object is not default constructible, initializes the creator
+ * to nullptr
+ * 
+ * @return nullptr
+ */
+template< class T>
+typename std::enable_if< !std::is_default_constructible<T>::value, typename Singleton<T>::creator_type >::type
+initialize_creator() {
+  return [] {
+    return nullptr;
+  };
+}
+
+}
+
+template<class T>
+typename Singleton<T>::creator_type Singleton<T>::m_creator = initialize_creator<T>();
+
+}
+
+#endif	/* SINGLETON_H_20150312 */
 

@@ -36,13 +36,47 @@
  * Created on March 2, 2015
  */
 
+#include <singleton.h>
+
 #include <boost/test/unit_test.hpp>
 #include <boost/test/unit_test_suite.hpp>
+
+using namespace std;
+
+namespace {
+struct A {
+  A(int a) : m_int(a) {}    
+  
+  int get() {
+    return m_int;
+  }
+  
+private:
+  int m_int;
+};
+}
 
 BOOST_AUTO_TEST_SUITE(SingletonTest)
 BOOST_AUTO_TEST_CASE(CommonOperations)
 {
-  auto a = int(10);
-  BOOST_CHECK_EQUAL(a,10);  
+  //////////
+  // CLASS WITH DEFAULT CONSTRUCTOR  
+  using TheInt = mwheel::Singleton<int>;
+  // Check the presence of default constructor
+  BOOST_CHECK_EQUAL(TheInt::get_instance(),0);  
+  // Check that the instance is not reset
+  TheInt::set_creator( []{ return make_shared<int>(10); } );  
+  BOOST_CHECK_EQUAL(TheInt::get_instance(),0);
+  // Check that the instance is reset
+  TheInt::set_creator( []{ return make_shared<int>(11); } );  
+  BOOST_CHECK_EQUAL(TheInt::get_instance(true),11);    
+  //////////
+  
+  //////////
+  // CLASS WITH DEFAULT CONSTRUCTOR  
+  using TheA = mwheel::Singleton<A>;
+  // Check that the class throws
+  BOOST_CHECK_THROW(TheA::get_instance(),TheA::CreatorNotSet); 
+  //////////
 }        
 BOOST_AUTO_TEST_SUITE_END()
