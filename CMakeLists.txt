@@ -83,7 +83,7 @@ FIND_PACKAGE( Boost 1.55 REQUIRED )
 #ADD_SUBDIRECTORY( "src" )
 
 IF( BUILD_DOCUMENTATION )
-  #ADD_SUBDIRECTORY( "doc" )
+  ADD_SUBDIRECTORY( "doc" )
 ENDIF()
 
 OPTION( BUILD_UNIT_TEST "Enable the build of unit tests" ON )
