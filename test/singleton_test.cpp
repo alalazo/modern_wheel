@@ -33,7 +33,7 @@
  *
  * @author Massimiliano Culpo
  *
- * Created on March 2, 2015
+ * Created on March 2, 2015, 3:50 PM
  */
 
 #include <singleton.h>
@@ -44,39 +44,56 @@
 using namespace std;
 
 namespace {
+
 struct A {
-  A(int a) : m_int(a) {}    
-  
-  int get() {
+
+  A(int a) : m_int(a)
+  {
+  }
+
+  int get()
+  {
     return m_int;
   }
-  
+
 private:
   int m_int;
 };
 }
 
 BOOST_AUTO_TEST_SUITE(SingletonTest)
-BOOST_AUTO_TEST_CASE(CommonOperations)
+BOOST_AUTO_TEST_CASE(ClassWithDefaultConstructor)
 {
   //////////
   // CLASS WITH DEFAULT CONSTRUCTOR  
   using TheInt = mwheel::Singleton<int>;
   // Check the presence of default constructor
-  BOOST_CHECK_EQUAL(TheInt::get_instance(),0);  
+  BOOST_CHECK_EQUAL(TheInt::get_instance(), 0);
   // Check that the instance is not reset
-  TheInt::set_creator( []{ return make_shared<int>(10); } );  
-  BOOST_CHECK_EQUAL(TheInt::get_instance(),0);
+  TheInt::set_creator([]
+  {
+    return make_shared<int>(10); });
+  BOOST_CHECK_EQUAL(TheInt::get_instance(), 0);
   // Check that the instance is reset
-  TheInt::set_creator( []{ return make_shared<int>(11); } );  
-  BOOST_CHECK_EQUAL(TheInt::get_instance(true),11);    
+  TheInt::set_creator([]
+  {
+    return make_shared<int>(11); });
+  BOOST_CHECK_EQUAL(TheInt::get_instance(true), 11);
   //////////
-  
+}
+
+BOOST_AUTO_TEST_CASE(ClassWithoutDefaultConstructor)
+{
   //////////
-  // CLASS WITH DEFAULT CONSTRUCTOR  
+  // CLASS WITHOUT DEFAULT CONSTRUCTOR  
   using TheA = mwheel::Singleton<A>;
   // Check that the class throws
-  BOOST_CHECK_THROW(TheA::get_instance(),TheA::CreatorNotSet); 
+  BOOST_CHECK_THROW(TheA::get_instance(), TheA::CreatorNotSet);
+  // Check that the instance is reset
+  TheA::set_creator([]
+  {
+    return make_shared<A>(11); });
+  BOOST_CHECK_EQUAL(TheA::get_instance(true).get(), 11);
   //////////
-}        
+}
 BOOST_AUTO_TEST_SUITE_END()

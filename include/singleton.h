@@ -107,7 +107,7 @@ private:
    * @throw CreatorNotSet creator was not set to a valid value
    */
   static void check_creator() {
-    if ( m_creator == nullptr ) {
+    if ( !m_creator ) {
       // Using auto with an std::stringstream is a PITA!
       std::stringstream estream;
       estream << "ERROR :  in Singleton " << typeid(Singleton).name() << std::endl;
@@ -115,6 +115,7 @@ private:
       throw CreatorNotSet( estream.str() );
     }
   }
+  /// Creator of the singleton object
   static creator_type m_creator;
 };
 
@@ -143,9 +144,7 @@ initialize_creator() {
 template< class T>
 typename std::enable_if< !std::is_default_constructible<T>::value, typename Singleton<T>::creator_type >::type
 initialize_creator() {
-  return [] {
-    return nullptr;
-  };
+    return nullptr;  
 }
 
 }
