@@ -26,7 +26,11 @@
 
 FIND_PACKAGE( Boost 1.55 REQUIRED COMPONENTS unit_test_framework )
 
-SET( TEST_SOURCES singleton_test.cpp )
+SET( 
+  TEST_SOURCES 
+  prototype_factory_test.cpp
+  singleton_test.cpp 
+)
 
 ##########
 ## Dynamic library : collection of tests

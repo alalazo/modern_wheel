@@ -110,8 +110,9 @@ private:
     if ( !m_creator ) {
       // Using auto with an std::stringstream is a PITA!
       std::stringstream estream;
-      estream << "ERROR :  in Singleton " << typeid(Singleton).name() << std::endl;
+      estream << "ERROR : in Singleton " << typeid(Singleton).name() << std::endl;
       estream << "\tcreator not set" << std::endl;
+      estream << "\tMaybe you forgot to call \"set_creator\" before retrieving the singleton instance?" << std::endl;
       throw CreatorNotSet( estream.str() );
     }
   }
