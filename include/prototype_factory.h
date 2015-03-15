@@ -64,6 +64,10 @@ public:
   };
   using product_type = ProductType;
 
+  PrototypeFactory() {
+    m_on_tag_not_registered = PrototypeFactory::throw_if_tag_not_registered;
+  }
+  
   template< class ObjectType >
   bool register_prototype(const TagType& tag, ObjectType& obj) {
     /// @todo The line below requires objects to be copy constructible
@@ -71,8 +75,12 @@ public:
     return m_prototype_map.insert(typename PrototypeMap::value_type(tag, stored)).second;
   }
 
+  bool has_tag(const TagType& tag) const {
+    
+  }
+  
   bool unregister_prototype(const TagType& tag) {
-
+    
   }
 
   template<class... ParameterTypes>

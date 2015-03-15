@@ -41,12 +41,17 @@ class Base {
 public:
   using clone_type = shared_ptr<Base>;
   virtual clone_type clone() = 0;
+  virtual int get() = 0;
 };
 
 struct DerivedA : public Base{
 
   Base::clone_type clone() {
     return make_shared<DerivedA>();
+  }
+
+  virtual int get() {
+    return 1;
   }
 
 };
@@ -62,6 +67,9 @@ BOOST_AUTO_TEST_CASE(NoParameters)
   // Register types
   DerivedA a;
   BOOST_CHECK_EQUAL(factory.register_prototype("DerivedA",a),true);
+  // Check that the correct object is created
   auto obj = factory.create("DerivedA");
+  BOOST_CHECK_EQUAL(obj->get(),1);
+  // Check 
 }
 BOOST_AUTO_TEST_SUITE_END()
