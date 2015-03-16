@@ -29,7 +29,7 @@ function(JOIN VALUES GLUE OUTPUT)
   set (${OUTPUT} "${_TMP_STR}" PARENT_SCOPE)
 endfunction()
 
-FIND_PACKAGE(Doxygen 1.8.7 REQUIRED)
+FIND_PACKAGE(Doxygen 1.8.6 REQUIRED)
 
 SET( doxyfile_in          ${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in     )
 SET( doxyfile_logo        ${CMAKE_CURRENT_SOURCE_DIR}/Wagon_wheel_at_Black_Creek_Pioneer_Village.jpg )

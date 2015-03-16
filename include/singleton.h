@@ -63,7 +63,7 @@ public:
   /**
    * @brief Exception thrown when the creator was not set
    */
-  class CreatorNotSet : public std::runtime_error{   
+  class creator_not_set : public std::runtime_error{   
     using std::runtime_error::runtime_error;
   };  
   /// Type of the singleton creator  
@@ -81,6 +81,10 @@ public:
 
   /**
    * @brief Returns the single instance of T
+   * 
+   * This method performs a call to the creator function if:
+   * - the singleton was not already created (lazy initialization)
+   * - an explicit request to reset the singleton state is made 
    * 
    * @param[in] reset if true resets the instance state 
    * performing a call to the creator
@@ -113,7 +117,7 @@ private:
       estream << "ERROR : in Singleton " << typeid(Singleton).name() << std::endl;
       estream << "\tcreator not set" << std::endl;
       estream << "\tMaybe you forgot to call \"set_creator\" before retrieving the singleton instance?" << std::endl;
-      throw CreatorNotSet( estream.str() );
+      throw creator_not_set( estream.str() );
     }
   }
   /// Creator of the singleton object

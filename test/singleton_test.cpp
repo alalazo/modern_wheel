@@ -72,7 +72,8 @@ BOOST_AUTO_TEST_CASE(ClassWithDefaultConstructor)
   // Check that the instance is not reset
   TheInt::set_creator([]
   {
-    return make_shared<int>(10); });
+    return make_shared<int>(10); 
+  });
   BOOST_CHECK_EQUAL(TheInt::get_instance(), 0);
   // Check that the instance is reset
   TheInt::set_creator([]
@@ -88,11 +89,12 @@ BOOST_AUTO_TEST_CASE(ClassWithoutDefaultConstructor)
   // CLASS WITHOUT DEFAULT CONSTRUCTOR  
   using TheA = mwheel::Singleton<A>;
   // Check that the class throws
-  BOOST_CHECK_THROW(TheA::get_instance(), TheA::CreatorNotSet);
+  BOOST_CHECK_THROW(TheA::get_instance(), TheA::creator_not_set);
   // Check that the instance is reset
   TheA::set_creator([]
   {
-    return make_shared<A>(11); });
+    return make_shared<A>(11);
+  });
   BOOST_CHECK_EQUAL(TheA::get_instance(true).get(), 11);
   //////////
 }

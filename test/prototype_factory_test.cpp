@@ -46,11 +46,11 @@ public:
 
 struct DerivedA : public Base{
 
-  Base::clone_type clone() {
+  Base::clone_type clone() override {
     return make_shared<DerivedA>();
   }
 
-  virtual int get() {
+  int get() override {
     return 1;
   }
 
