@@ -82,6 +82,8 @@ public:
   struct tag_not_registered : public std::runtime_error {
     using std::runtime_error::runtime_error;
   };
+  /// Type of the tag
+  using tag_type = TagType;
   /// Type of the product
   using product_type = ProductType;
 

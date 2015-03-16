@@ -66,10 +66,23 @@ BOOST_AUTO_TEST_CASE(NoParameters)
   FactoryType factory;
   // Register types
   DerivedA a;
+  // Registering a type under a new tag should work
   BOOST_CHECK_EQUAL(factory.register_prototype("DerivedA",a),true);
+  // Trying to register under the same tag should fail
+  BOOST_CHECK_EQUAL(factory.register_prototype("DerivedA",a),false);
   // Check that the correct object is created
   auto obj = factory.create("DerivedA");
   BOOST_CHECK_EQUAL(obj->get(),1);
-  // Check 
+  // Unregister an existent tag should work
+  BOOST_CHECK_EQUAL(factory.has_tag("DerivedA"),true);
+  BOOST_CHECK_EQUAL(factory.unregister_prototype("DerivedA"),true);  
+  // Unregister a non-existent tag should fail
+  BOOST_CHECK_EQUAL(factory.has_tag("DerivedA"),false);
+  BOOST_CHECK_EQUAL(factory.unregister_prototype("DerivedA"),false);  
+  // Check the default behavior with throws
+  BOOST_CHECK_THROW(factory.create("DerivedA"),FactoryType::tag_not_registered);
+  // Check customization of on_tag_not_registered
+  factory.on_tag_not_registered([](FactoryType::tag_type tag){ return nullptr; });
+  BOOST_CHECK_EQUAL(factory.create("DerivedA"),FactoryType::product_type(nullptr));  
 }
 BOOST_AUTO_TEST_SUITE_END()
