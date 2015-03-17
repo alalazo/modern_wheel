@@ -56,6 +56,34 @@ struct DerivedA : public Base{
 
 };
 
+class BaseMultiParms {
+public:
+  using clone_type = shared_ptr<BaseMultiParms>;
+  virtual clone_type clone(int a) = 0;
+  virtual clone_type clone(int a, int b) = 0;
+  virtual int get() = 0;
+};
+
+class DerivedSum : public BaseMultiParms {
+public:
+  explicit DerivedSum(int a) : m_a(a){}
+    
+  BaseMultiParms::clone_type clone(int a) override {
+    return make_shared<DerivedSum>(a);
+  }
+  
+  BaseMultiParms::clone_type clone(int a, int b) override {
+    return make_shared<DerivedSum>(a+b);
+  }
+  
+  int get() override {
+    return m_a;
+  }
+  
+private:
+  int m_a = 0;
+};
+
 }
 
 BOOST_AUTO_TEST_SUITE(PrototypeFactoryTest)
@@ -88,5 +116,17 @@ BOOST_AUTO_TEST_CASE(NoParameters)
   // Check customization of on_tag_not_registered
   factory.on_tag_not_registered([](FactoryType::tag_type tag){ return nullptr; });
   BOOST_CHECK_EQUAL(factory.create("DerivedA"),FactoryType::product_type(nullptr));  
+}
+BOOST_AUTO_TEST_CASE(MultipleParameters)
+{
+  // Create a factory and register a type
+  using FactoryType = mwheel::PrototypeFactory<BaseMultiParms,int>;
+  FactoryType factory;
+  BOOST_CHECK_EQUAL(factory.register_prototype(0,make_shared<DerivedSum>(10)),true);
+  // Check creation using multiple parameters
+  auto obja = factory.create(0,3);
+  BOOST_CHECK_EQUAL(obja->get(),3);  
+  auto objb = factory.create(0,3,6);
+  BOOST_CHECK_EQUAL(objb->get(),9);    
 }
 BOOST_AUTO_TEST_SUITE_END()
