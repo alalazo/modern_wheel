@@ -106,7 +106,20 @@ public:
   bool register_prototype(const TagType& tag, const ObjectType& obj) {
     /// @warning The current implementation requires objects to be copy constructible
     StoredType stored = std::make_shared<ObjectType>(obj);
-    return m_prototype_map.insert(typename PrototypeMap::value_type(tag, stored)).second;
+    return register_prototype(tag,stored);
+  }
+
+  /**
+   * @brief Registers an object in the factory
+   * 
+   * @param[in] tag tag associated with the object
+   * @param[in] sobj shared pointer to the object to be registered
+   * 
+   * @return true if the registration was successful, false otherwise
+   */
+  template< class ObjectType >
+  bool register_prototype(const TagType& tag, std::shared_ptr<ObjectType> sobj) {
+    return m_prototype_map.insert(typename PrototypeMap::value_type(tag, sobj)).second;
   }
 
   /**

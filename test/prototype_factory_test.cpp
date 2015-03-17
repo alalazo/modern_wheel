@@ -68,11 +68,15 @@ BOOST_AUTO_TEST_CASE(NoParameters)
   DerivedA a;
   // Registering a type under a new tag should work
   BOOST_CHECK_EQUAL(factory.register_prototype("DerivedA",a),true);
+  BOOST_CHECK_EQUAL(factory.register_prototype("SDerivedA",make_shared<DerivedA>()),true);
   // Trying to register under the same tag should fail
-  BOOST_CHECK_EQUAL(factory.register_prototype("DerivedA",a),false);
+  BOOST_CHECK_EQUAL(factory.register_prototype("DerivedA",a),false);  
+  BOOST_CHECK_EQUAL(factory.register_prototype("SDerivedA",make_shared<DerivedA>()),false);
   // Check that the correct object is created
   auto obj = factory.create("DerivedA");
-  BOOST_CHECK_EQUAL(obj->get(),1);
+  BOOST_CHECK_EQUAL(obj->get(),1);  
+  auto sobj = factory.create("DerivedA");
+  BOOST_CHECK_EQUAL(sobj->get(),1);  
   // Unregister an existent tag should work
   BOOST_CHECK_EQUAL(factory.has_tag("DerivedA"),true);
   BOOST_CHECK_EQUAL(factory.unregister_prototype("DerivedA"),true);  
