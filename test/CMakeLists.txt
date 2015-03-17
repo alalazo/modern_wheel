@@ -24,10 +24,13 @@
 # SOFTWARE.
 # 
 
+ADD_SUBDIRECTORY( "fixtures" )
+
 FIND_PACKAGE( Boost 1.55 REQUIRED COMPONENTS unit_test_framework )
 
 SET( 
   TEST_SOURCES 
+  dlmanager_test.cpp
   prototype_factory_test.cpp
   singleton_test.cpp 
 )
@@ -51,6 +54,7 @@ TARGET_INCLUDE_DIRECTORIES(
 TARGET_LINK_LIBRARIES(
   modern_wheel_tests
   PUBLIC  
+  mwheel
   ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
 )
 ##########
