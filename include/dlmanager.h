@@ -42,18 +42,30 @@
 #include <boost/filesystem.hpp>
 
 #include <map>
+#include <stdexcept>
 
 namespace mwheel {
-  
-  class DLManager {
+
+class DLManager {
+public:
+
+  class error_loading_dynamic_library : public std::runtime_error {
   public:
-    void load_library(boost::filesystem::path library_path);
-      
-    ~DLManager();
-    
-  private:
-    std::map< boost::filesystem::path, void *> m_dl_map;
+    using std::runtime_error::runtime_error;
   };
+
+  class error_unloading_dynamic_library : public std::runtime_error {
+  public:
+    using std::runtime_error::runtime_error;
+  };
+
+  void load_library(boost::filesystem::path library_path);
+
+  ~DLManager();
+
+private:
+  std::map< boost::filesystem::path, void *> m_dl_map;
+};
 }
 
 #endif	/* DLMANAGER_H_20150317 */

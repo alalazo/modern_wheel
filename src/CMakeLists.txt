@@ -51,7 +51,7 @@ TARGET_INCLUDE_DIRECTORIES(
 ## Link libraries
 TARGET_LINK_LIBRARIES(
   mwheel
-  PUBLIC ${Boost_LIBRARIES}
+  PUBLIC ${Boost_LIBRARIES} -ldl # WARNING : Works only for Unix
 )
 
 ## Install libraries

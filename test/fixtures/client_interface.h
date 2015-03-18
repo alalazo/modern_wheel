@@ -26,55 +26,41 @@
  *
  */
 
-#include <dlmanager.h>
+/**
+ * @file client_interface.h
+ * 
+ * @brief Dummy client interface to test DLManager
+ * 
+ * @author Massimiliano Culpo
+ *
+ * Created on March 18, 2015, 8:39 AM
+ */
 
-#include <boost/predef.h>
+#ifndef CLIENT_INTERFACE_H_20150318
+#define	CLIENT_INTERFACE_H_20150318
 
-#include <iostream>
-#include <sstream>
-#include <typeinfo>
-#include <utility>
+#include <singleton.h>
+#include <prototype_factory.h>
 
-#ifdef BOOST_OS_UNIX
-#include <dlfcn.h>
-#else
-#error "At present only Unix-like OS are supported"
-#endif
-
-using namespace std;
+#include <memory>
 
 namespace mwheel {
+namespace test {
 
-void DLManager::load_library(boost::filesystem::path library_path)
-{
-#ifdef BOOST_OS_UNIX
-  auto handle = dlopen(library_path.c_str(), RTLD_LAZY);
-  auto error_message = dlerror();
-  if (error_message)
-  {
-    stringstream estream;
-    estream << "ERROR : cannot load shared library " << library_path << endl;
-    estream << "\t" << error_message << endl;
-    throw error_loading_dynamic_library(estream.str());
+class ClientInterface {
+public:
+  using clone_type = std::shared_ptr<ClientInterface>;
+  using factory_type = Singleton< PrototypeFactory<ClientInterface,std::string> >; 
+  
+  virtual int get() = 0;
+  virtual clone_type clone() = 0;  
+  virtual ~ClientInterface() {
   }
-  m_dl_map.insert(make_pair(library_path, handle));
-#endif
-}
-
-DLManager::~DLManager()
-{
-#ifdef BOOST_OS_UNIX
-  for (auto & x : m_dl_map)
-  {
-    dlclose(x.second);
-    auto error_message = dlerror();
-    if (error_message)
-    {
-      cerr << "ERROR : cannot unload shared library " << x.first << endl;
-      cerr << "\t" << error_message << endl;      
-    }
-  }
-#endif
-}
+  
+};
 
 }
+}
+
+#endif	/* CLIENT_INTERFACE_H_20150318 */
+

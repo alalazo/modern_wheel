@@ -72,7 +72,7 @@ BOOST_AUTO_TEST_CASE(ClassWithDefaultConstructor)
   // Check that the instance is not reset
   TheInt::set_creator([]
   {
-    return make_shared<int>(10); 
+    return make_shared<int>(10);
   });
   BOOST_CHECK_EQUAL(TheInt::get_instance(), 0);
   // Check that the instance is reset

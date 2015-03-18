@@ -24,3 +24,15 @@
 # SOFTWARE.
 # 
 
+ADD_LIBRARY( 
+  plugin_extension_test SHARED
+  ${CMAKE_CURRENT_SOURCE_DIR}/plugin_extension.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/plugin_extension.cpp
+)
+
+TARGET_INCLUDE_DIRECTORIES(
+  plugin_extension_test
+  PUBLIC 
+  ${PROJECT_SOURCE_DIR}/include
+  ${PROJECT_SOURCE_DIR}/test
+)

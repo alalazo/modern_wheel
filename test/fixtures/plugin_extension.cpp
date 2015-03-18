@@ -26,55 +26,25 @@
  *
  */
 
-#include <dlmanager.h>
-
-#include <boost/predef.h>
-
-#include <iostream>
-#include <sstream>
-#include <typeinfo>
-#include <utility>
-
-#ifdef BOOST_OS_UNIX
-#include <dlfcn.h>
-#else
-#error "At present only Unix-like OS are supported"
-#endif
+#include <fixtures/plugin_extension.h>
 
 using namespace std;
 
 namespace mwheel {
+namespace test {
 
-void DLManager::load_library(boost::filesystem::path library_path)
+int PluginExtension::get()
 {
-#ifdef BOOST_OS_UNIX
-  auto handle = dlopen(library_path.c_str(), RTLD_LAZY);
-  auto error_message = dlerror();
-  if (error_message)
-  {
-    stringstream estream;
-    estream << "ERROR : cannot load shared library " << library_path << endl;
-    estream << "\t" << error_message << endl;
-    throw error_loading_dynamic_library(estream.str());
-  }
-  m_dl_map.insert(make_pair(library_path, handle));
-#endif
+  return m_int;
 }
 
-DLManager::~DLManager()
+ClientInterface::clone_type PluginExtension::clone()
 {
-#ifdef BOOST_OS_UNIX
-  for (auto & x : m_dl_map)
-  {
-    dlclose(x.second);
-    auto error_message = dlerror();
-    if (error_message)
-    {
-      cerr << "ERROR : cannot unload shared library " << x.first << endl;
-      cerr << "\t" << error_message << endl;      
-    }
-  }
-#endif
+  return make_shared<PluginExtension>();
 }
 
+bool PluginExtension::m_is_registered(
+ClientInterface::factory_type::get_instance().register_prototype("PluginExtension",make_shared<PluginExtension>())
+);
+}
 }
