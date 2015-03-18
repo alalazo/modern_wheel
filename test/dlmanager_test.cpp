@@ -63,7 +63,7 @@ BOOST_AUTO_TEST_CASE(DynamicLibraryLoading)
   using TheFactory = mwheel::test::ClientInterface::factory_type;
   mwheel::DLManager manager;
   // Load an external plugin
-  manager.load_library("/home/mculpo/github/modern-wheels/build/test/fixtures/libplugin_extension_test.so");
+  manager.load_library("@CMAKE_CURRENT_BINARY_DIR@/fixtures/libplugin_extension_test.so");
   auto external_object = TheFactory::get_instance().create("PluginExtension");
   BOOST_CHECK_EQUAL(external_object->get(),10);
   // Load an internal extension

@@ -28,11 +28,12 @@ ADD_SUBDIRECTORY( "fixtures" )
 
 FIND_PACKAGE( Boost 1.55 REQUIRED COMPONENTS unit_test_framework )
 
+CONFIGURE_FILE( dlmanager_test.cpp ${CMAKE_CURRENT_BINARY_DIR} @ONLY)
 SET( 
   TEST_SOURCES 
-  dlmanager_test.cpp
-  prototype_factory_test.cpp
-  singleton_test.cpp 
+  ${CMAKE_CURRENT_BINARY_DIR}/dlmanager_test.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/prototype_factory_test.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/singleton_test.cpp 
 )
 
 ##########
