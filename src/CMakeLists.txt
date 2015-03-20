@@ -56,6 +56,9 @@ TARGET_LINK_LIBRARIES(
 
 ## Install libraries
 INSTALL( 
-  TARGETS mwheel 
+  TARGETS mwheel
+  EXPORT modern_wheel
   DESTINATION "lib"
 )
+
+INSTALL(EXPORT modern_wheel DESTINATION "lib")
