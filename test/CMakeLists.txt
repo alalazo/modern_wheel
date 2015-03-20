@@ -31,9 +31,10 @@ FIND_PACKAGE( Boost 1.55 REQUIRED COMPONENTS unit_test_framework )
 CONFIGURE_FILE( dlmanager_test.cpp ${CMAKE_CURRENT_BINARY_DIR} @ONLY)
 SET( 
   TEST_SOURCES 
-  ${CMAKE_CURRENT_BINARY_DIR}/dlmanager_test.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/prototype_factory_test.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/singleton_test.cpp 
+  ${CMAKE_CURRENT_BINARY_DIR}/dlmanager_test.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/fixtures/internal_extension.cpp
 )
 
 ##########

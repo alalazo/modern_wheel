@@ -35,28 +35,6 @@
 
 using namespace std;
 
-namespace {
-
-class InternalExtension : public mwheel::test::ClientInterface {
-public:
-  int get() override {
-    return m_int;
-  }
-
-  ClientInterface::clone_type clone() {
-    return make_shared<InternalExtension>();
-  }
-
-private:
-  int m_int = 20;
-  static bool m_is_registered;
-};
-
-bool InternalExtension::m_is_registered(
-InternalExtension::factory_type::get_instance().register_prototype("InternalExtension",make_shared<InternalExtension>())
-);
-}
-
 BOOST_AUTO_TEST_SUITE(DLManagerTest)
 BOOST_AUTO_TEST_CASE(DynamicLibraryLoading)
 {
