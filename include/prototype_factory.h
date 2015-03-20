@@ -39,11 +39,12 @@
 #ifndef PROTOTYPE_FACTORY_H_20150313
 #define	PROTOTYPE_FACTORY_H_20150313
 
+#include <mwheel_utility.h>
+
 #include <functional>
 #include <map>
 #include <memory>
 #include <sstream>
-#include <stdexcept>
 #include <typeinfo>
 
 namespace mwheel {
@@ -79,9 +80,7 @@ private:
   using PrototypeMap = std::map<TagType,StoredType >;
 public:
   /// Exception thrown by default when trying to create a type that was not registered
-  struct tag_not_registered : public std::runtime_error {
-    using std::runtime_error::runtime_error;
-  };
+  MWHEEL_EXCEPTION(tag_not_registered);  
   /// Type of the tag
   using tag_type = TagType;
   /// Type of the product

@@ -39,10 +39,11 @@
 #ifndef DLMANAGER_H_20150317
 #define	DLMANAGER_H_20150317
 
+#include <mwheel_utility.h>
+
 #include <boost/filesystem.hpp>
 
 #include <map>
-#include <stdexcept>
 
 namespace mwheel {
 
@@ -57,31 +58,12 @@ namespace mwheel {
  */
 class DLManager {
 public:
-
-  /**
-   * @brief Exception thrown if an error occurred when loading a shared library
-   */
-  class error_loading_dynamic_library : public std::runtime_error {
-  public:
-    using std::runtime_error::runtime_error;
-  };
-
-  /**
-   * @brief Exception thrown if an error occurred when unloading a shared library
-   */
-  class error_unloading_dynamic_library : public std::runtime_error {
-  public:
-    using std::runtime_error::runtime_error;
-  };
-
-  /**
-   * @brief Exception thrown when trying to unload a library that was not
-   * previously loaded
-   */
-  class library_not_loaded : public std::runtime_error {
-  public:
-    using std::runtime_error::runtime_error;
-  };
+  /// @brief Exception thrown if an error occurred when loading a shared library  
+  MWHEEL_EXCEPTION(error_loading_dynamic_library);
+  /// @brief Exception thrown if an error occurred when unloading a shared library
+  MWHEEL_EXCEPTION(error_unloading_dynamic_library);
+  /// @brief Exception thrown when trying to unload a library that was not previously loaded
+  MWHEEL_EXCEPTION(library_not_loaded);
   
   /**
    * @brief Loads the shared library specified by the given path

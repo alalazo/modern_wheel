@@ -39,10 +39,11 @@
 #ifndef SINGLETON_H_20150312
 #define	SINGLETON_H_20150312
 
+#include <mwheel_utility.h>
+
 #include <functional>
 #include <memory>
 #include <sstream>
-#include <stdexcept>
 #include <typeinfo>
 #include <type_traits>
 
@@ -63,9 +64,7 @@ public:
   /**
    * @brief Exception thrown when the creator was not set
    */
-  class creator_not_set : public std::runtime_error{   
-    using std::runtime_error::runtime_error;
-  };  
+  MWHEEL_EXCEPTION(creator_not_set);  
   /// Type of the singleton creator  
   using creator_type = std::function< std::shared_ptr<T> (void) >;
 

@@ -26,6 +26,7 @@
 
 SET( 
   MWHEEL_HEADERS_LOCAL
+  ${CMAKE_CURRENT_SOURCE_DIR}/mwheel_utility.h
   ${CMAKE_CURRENT_SOURCE_DIR}/singleton.h
   ${CMAKE_CURRENT_SOURCE_DIR}/prototype_factory.h
   ${CMAKE_CURRENT_SOURCE_DIR}/dlmanager.h  
