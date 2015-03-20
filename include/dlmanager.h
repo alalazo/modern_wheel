@@ -46,25 +46,79 @@
 
 namespace mwheel {
 
+/**
+ * @brief Manages dynamic loading of shared libraries
+ * 
+ * @warning Current limitations:
+ * - works only for POSIX systems
+ * - external libraries and client application must be built with a 
+ * compatible compiler (there is no C-ABI layer)
+ * 
+ */
 class DLManager {
 public:
 
+  /**
+   * @brief Exception thrown if an error occurred when loading a shared library
+   */
   class error_loading_dynamic_library : public std::runtime_error {
   public:
     using std::runtime_error::runtime_error;
   };
 
+  /**
+   * @brief Exception thrown if an error occurred when unloading a shared library
+   */
   class error_unloading_dynamic_library : public std::runtime_error {
   public:
     using std::runtime_error::runtime_error;
   };
 
-  void load_library(boost::filesystem::path library_path);
-
+  /**
+   * @brief Exception thrown when trying to unload a library that was not
+   * previously loaded
+   */
+  class library_not_loaded : public std::runtime_error {
+  public:
+    using std::runtime_error::runtime_error;
+  };
+  
+  /**
+   * @brief Loads the shared library specified by the given path
+   * 
+   * @param[in] library_path path of the library to be loaded
+   * 
+   * @throw error_loading_dynamic_library exception thrown if an error 
+   * occurred during the loading operation
+   */
+  void load_library(const boost::filesystem::path& library_path);
+  
+  /**
+   * @brief Unloads the shared library specified by the given path
+   * 
+   * @param[in] library_path path of the library to be unloaded
+   * 
+   * @throw library_not_loaded exception thrown if the library was not 
+   * previously loaded
+   * 
+   * @throw error_unloading_dynamic_library exception thrown if an error 
+   * occurred during the unloading operation
+   * 
+   * @warning Trying to unload a library that introduces classes in the 
+   * application that are currently in scope may cause memory access violations
+   */
+  void unload_library(const boost::filesystem::path& library_path);
+  
+  /**
+   * @brief Unloads all the libraries loaded so far
+   */
   ~DLManager();
 
 private:
-  std::map< boost::filesystem::path, void *> m_dl_map;
+  /// Type used to store loaded libraries
+  using DLMap = std::map< boost::filesystem::path, void *>;
+  /// Map to store library handles once loaded
+  DLMap m_dl_map;
 };
 }
 

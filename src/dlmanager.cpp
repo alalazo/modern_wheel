@@ -45,10 +45,10 @@ using namespace std;
 
 namespace mwheel {
 
-void DLManager::load_library(boost::filesystem::path library_path)
+void DLManager::load_library(const boost::filesystem::path& library_path)
 {
 #ifdef BOOST_OS_UNIX
-  auto handle = dlopen(library_path.c_str(), RTLD_LAZY);
+  auto handle = dlopen(library_path.c_str(), RTLD_LOCAL | RTLD_LAZY);  
   auto error_message = dlerror();
   if (error_message)
   {
@@ -57,7 +57,32 @@ void DLManager::load_library(boost::filesystem::path library_path)
     estream << "\t" << error_message << endl;
     throw error_loading_dynamic_library(estream.str());
   }
-  m_dl_map.insert(make_pair(library_path, handle));
+  m_dl_map.insert(make_pair(library_path, handle));  
+#endif
+}
+
+void DLManager::unload_library(const boost::filesystem::path& library_path)
+{
+#ifdef BOOST_OS_UNIX
+  auto it = DLMap::iterator( m_dl_map.find(library_path) ); 
+  // The library was not found
+  if (it == m_dl_map.end() )
+  {
+    stringstream estream;
+    estream << "ERROR : cannot trying to unload a shared library that was not previously loaded " << library_path << endl;
+    estream << "\tDid you use a wrong name for the library to be unloaded?" << endl;
+    throw library_not_loaded(estream.str());
+  }
+  // Close the library  
+  if ( dlclose(it->second) )
+  {
+    auto error_message = dlerror();  
+    stringstream estream;
+    estream << "ERROR : cannot unload shared library " << library_path << endl;
+    estream << "\t" << error_message << endl;
+    throw error_unloading_dynamic_library(estream.str());
+  }
+  m_dl_map.erase(it);
 #endif
 }
 
