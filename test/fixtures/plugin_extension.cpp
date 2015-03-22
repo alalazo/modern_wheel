@@ -43,8 +43,7 @@ ClientInterface::clone_type PluginExtension::clone()
   return make_shared<PluginExtension>();
 }
 
-bool PluginExtension::m_is_registered(
-ClientInterface::factory_type::get_instance().register_prototype("PluginExtension",make_shared<PluginExtension>())
-);
+REGISTER_PLUGIN_PRODUCT(PluginExtension, ClientInterface, "PluginExtension");
+
 }
 }

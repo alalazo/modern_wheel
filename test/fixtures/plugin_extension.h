@@ -41,19 +41,23 @@
 
 #include <fixtures/client_interface.h>
 
+#include <algorithm>
+#include <functional>
+#include <vector>
+
 namespace mwheel {
 namespace test {
 
 class PluginExtension : public ClientInterface {
 public:
-
+          
   int get() override;
 
   ClientInterface::clone_type clone() override;
 
 private:
   int m_int = 10;
-  static bool m_is_registered;
+  REGISTRABLE_PRODUCT;
 };
 
 }

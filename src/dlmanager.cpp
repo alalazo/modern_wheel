@@ -74,7 +74,6 @@ void DLManager::unload_library(const boost::filesystem::path& library_path)
     throw library_not_loaded(estream.str());
   }
   // Close the library  
-#ifdef MWHEEL_ENABLE_DLCLOSE
   if ( dlclose(it->second) )
   {
     auto error_message = dlerror();  
@@ -83,7 +82,6 @@ void DLManager::unload_library(const boost::filesystem::path& library_path)
     estream << "\t" << error_message << endl;
     throw error_unloading_dynamic_library(estream.str());
   }
-#endif
   m_dl_map.erase(it);
 #endif
 }
@@ -91,7 +89,6 @@ void DLManager::unload_library(const boost::filesystem::path& library_path)
 DLManager::~DLManager()
 {
 #ifdef BOOST_OS_UNIX
-#ifdef MWHEEL_ENABLE_DLCLOSE
   for (auto & x : m_dl_map)
   {
     dlclose(x.second);
@@ -102,7 +99,6 @@ DLManager::~DLManager()
       cerr << "\t" << error_message << endl;      
     }
   }
-#endif
 #endif
 }
 

@@ -33,9 +33,7 @@ using namespace std;
 namespace mwheel {
 namespace test {
 
-bool InternalExtension::m_is_registered(
-InternalExtension::factory_type::get_instance().register_prototype("InternalExtension",make_shared<InternalExtension>())
-);
+REGISTER_PRODUCT(InternalExtension, ClientInterface, "InternalExtension");
 
 }
 }

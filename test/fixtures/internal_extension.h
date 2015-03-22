@@ -46,6 +46,7 @@ namespace test {
 
 class InternalExtension : public mwheel::test::ClientInterface {
 public:
+
   int get() override {
     return m_int;
   }
@@ -56,7 +57,7 @@ public:
 
 private:
   int m_int = 20;
-  static bool m_is_registered;
+  REGISTRABLE_PRODUCT;
 };
 
 

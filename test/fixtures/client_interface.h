@@ -39,8 +39,7 @@
 #ifndef CLIENT_INTERFACE_H_20150318
 #define	CLIENT_INTERFACE_H_20150318
 
-#include <singleton.h>
-#include <prototype_factory.h>
+#include <plugin_utility.h>
 
 #include <memory>
 
@@ -50,13 +49,14 @@ namespace test {
 class ClientInterface {
 public:
   using clone_type = std::shared_ptr<ClientInterface>;
-  using factory_type = Singleton< PrototypeFactory<ClientInterface,std::string> >; 
-  
+  EXPOSE_INTERFACE_FACTORY(ClientInterface, std::string);
+
   virtual int get() = 0;
-  virtual clone_type clone() = 0;  
+  virtual clone_type clone() = 0;
+
   virtual ~ClientInterface() {
   }
-  
+
 };
 
 }
