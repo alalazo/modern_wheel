@@ -37,11 +37,11 @@
  * Created on March 22, 2015, 10:26 PM
  */
 
-#ifndef PLUGIN_UTILITY_H_20150322
-#define	PLUGIN_UTILITY_H_20150322
+#ifndef PLUGIN_H_20150322
+#define	PLUGIN_H_20150322
 
-#include <singleton.h>
-#include <prototype_factory.h>
+#include <mwheel/singleton.h>
+#include <mwheel/prototype_factory.h>
 
 /**
  * @brief Must be used inside the public part of an interface to
@@ -121,5 +121,5 @@ private:
 }
 }
 
-#endif	/* PLUGIN_UTILITY_H_20150322 */
+#endif	/* PLUGIN_H_20150322 */
 

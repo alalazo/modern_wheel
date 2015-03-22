@@ -39,7 +39,7 @@
 #ifndef SINGLETON_H_20150312
 #define	SINGLETON_H_20150312
 
-#include <mwheel_utility.h>
+#include <mwheel/utility.h>
 
 #include <functional>
 #include <memory>

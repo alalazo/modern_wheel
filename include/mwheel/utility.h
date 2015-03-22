@@ -27,7 +27,7 @@
  */
 
 /**
- * @file mwheel_utility.h
+ * @file utility.h
  * 
  * @brief Contains macro and other tweaks used all over the library
  * 
@@ -36,8 +36,8 @@
  * Created on March 20, 2015, 12:38 PM
  */
 
-#ifndef MWHEEL_UTILITY_H_20150320
-#define	MWHEEL_UTILITY_H_20150320
+#ifndef UTILITY_H_20150320
+#define	UTILITY_H_20150320
 
 #include <stdexcept>
 
@@ -47,5 +47,5 @@ struct name : public std::runtime_error { \
     name(const std::string& what) : std::runtime_error(what){} \
 }
 
-#endif	/* MWHEEL_UTILITY_H_20150320 */
+#endif	/* UTILITY_H_20150320 */
 

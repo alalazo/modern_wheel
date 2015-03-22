@@ -39,7 +39,7 @@
 #ifndef DLMANAGER_H_20150317
 #define	DLMANAGER_H_20150317
 
-#include <mwheel_utility.h>
+#include <mwheel/utility.h>
 
 #include <boost/filesystem.hpp>
 

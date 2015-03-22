@@ -36,7 +36,7 @@
  * Created on March 2, 2015, 3:50 PM
  */
 
-#include <singleton.h>
+#include <mwheel/singleton.h>
 
 #include <boost/test/unit_test.hpp>
 #include <boost/test/unit_test_suite.hpp>

@@ -39,7 +39,7 @@
 #ifndef PROTOTYPE_FACTORY_H_20150313
 #define	PROTOTYPE_FACTORY_H_20150313
 
-#include <mwheel_utility.h>
+#include <mwheel/utility.h>
 
 #include <functional>
 #include <map>

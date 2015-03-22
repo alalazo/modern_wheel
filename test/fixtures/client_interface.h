@@ -39,7 +39,7 @@
 #ifndef CLIENT_INTERFACE_H_20150318
 #define	CLIENT_INTERFACE_H_20150318
 
-#include <plugin_utility.h>
+#include <mwheel/plugin.h>
 
 #include <memory>
 

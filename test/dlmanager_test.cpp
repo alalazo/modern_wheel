@@ -26,7 +26,7 @@
  *
  */
 
-#include <dlmanager.h>
+#include <mwheel/dlmanager.h>
 
 #include <fixtures/client_interface.h>
 

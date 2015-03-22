@@ -26,11 +26,11 @@
 
 SET( 
   MWHEEL_HEADERS_LOCAL
-  ${CMAKE_CURRENT_SOURCE_DIR}/mwheel_utility.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/plugin_utility.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/singleton.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/prototype_factory.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/dlmanager.h  
+  ${CMAKE_CURRENT_SOURCE_DIR}/mwheel/utility.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/mwheel/plugin.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/mwheel/singleton.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/mwheel/prototype_factory.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/mwheel/dlmanager.h  
 )
 
 SET( 
@@ -41,5 +41,5 @@ SET(
   
 INSTALL( 
   FILES ${MWHEEL_HEADERS_LOCAL}
-  DESTINATION "include"
+  DESTINATION "include/mwheel"
 )
