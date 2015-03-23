@@ -107,7 +107,7 @@ private:
   /**
    * @brief Checks if the creator is set to a valid value
    * 
-   * @throw CreatorNotSet creator was not set to a valid value
+   * @throw creator_not_set creator was not set to a valid value
    */
   static void check_creator() {
     if ( !m_creator ) {

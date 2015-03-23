@@ -153,7 +153,7 @@ public:
   }
 
   /**
-   * @brief Creates an object on based on a requested tag
+   * @brief Creates an object based on a requested tag
    * 
    * If the tag was not registered a call to a customizable function is made.
    * The default behavior is to throw an exception of type PrototypeFactory::tag_not_registered.
