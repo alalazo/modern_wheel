@@ -27,7 +27,7 @@
  */
 
 /**
- * @file plugin_utility.h
+ * @file plugin.h
  * 
  * @brief Contains macro to simplify the creation of plug-ins that are
  * loadable at run-time
@@ -48,7 +48,7 @@
  * expose the type `factory_type`
  */
 #define EXPOSE_INTERFACE_FACTORY(InterfaceType,TagType) \
-using factory_type = Singleton< PrototypeFactory<InterfaceType,TagType> >
+using factory_type = mwheel::Singleton< mwheel::PrototypeFactory<InterfaceType,TagType> >
 
 /**
  * @brief Must be used in the private section of a concrete product to 
