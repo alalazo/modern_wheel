@@ -47,13 +47,9 @@ namespace test {
 class InternalExtension : public mwheel::test::ClientInterface {
 public:
 
-  int get() override {
-    return m_int;
-  }
+  int get() override;
 
-  ClientInterface::clone_type clone() {
-    return std::make_shared<InternalExtension>();
-  }
+  ClientInterface::clone_type clone();
 
 private:
   int m_int = 20;

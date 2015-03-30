@@ -33,6 +33,14 @@ using namespace std;
 namespace mwheel {
 namespace test {
 
+ClientInterface::clone_type InternalExtension::clone() {
+  return std::make_shared<InternalExtension>();
+}
+        
+int InternalExtension::get() {
+  return m_int;
+}
+
 REGISTER_PRODUCT(InternalExtension, ClientInterface, "InternalExtension");
 
 }
