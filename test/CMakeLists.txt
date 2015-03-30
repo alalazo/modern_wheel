@@ -34,6 +34,7 @@ SET(
   ${CMAKE_CURRENT_SOURCE_DIR}/prototype_factory_test.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/singleton_test.cpp 
   ${CMAKE_CURRENT_BINARY_DIR}/dlmanager_test.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/fixtures/client_interface.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/fixtures/internal_extension.cpp
 )
 

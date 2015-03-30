@@ -26,40 +26,11 @@
  *
  */
 
-/**
- * @file client_interface.h
- * 
- * @brief Dummy client interface to test DLManager
- * 
- * @author Massimiliano Culpo
- *
- * Created on March 18, 2015, 8:39 AM
- */
-
-#ifndef CLIENT_INTERFACE_H_20150318
-#define	CLIENT_INTERFACE_H_20150318
-
-#include <mwheel/plugin.h>
-
-#include <memory>
+#include <fixtures/client_interface.h>
 
 namespace mwheel {
 namespace test {
-
-class ClientInterface {
-public:
-  using clone_type = std::shared_ptr<ClientInterface>;
-  EXPOSE_INTERFACE_FACTORY(ClientInterface, std::string);
-
-  virtual int get() = 0;
-  virtual clone_type clone() = 0;
-
-  virtual ~ClientInterface();
-
-};
-
+ClientInterface::~ClientInterface() {
 }
 }
-
-#endif	/* CLIENT_INTERFACE_H_20150318 */
-
+}
