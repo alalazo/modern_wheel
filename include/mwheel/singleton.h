@@ -47,81 +47,10 @@
 #include <typeinfo>
 #include <type_traits>
 
-/**
- * @brief Main namespace of the library
- */
 namespace mwheel {
-
-/**
- * @brief Ensures a class only has one instance, 
- * and provides a global point of access to it
- * 
- * @tparam T class that should have a single instance
- */
+// Forward declaration
 template< class T>
-class Singleton {
-public:
-  /**
-   * @brief Exception thrown when the creator was not set
-   */
-  MWHEEL_EXCEPTION(creator_not_set);  
-  /// Type of the singleton creator  
-  using creator_type = std::function< std::shared_ptr<T> (void) >;
-
-  /**
-   * @brief Sets the creator that will be used to construct the single instance
-   * 
-   * @param[in] creator anything that can bind to creator_type
-   */
-  template<class U>
-  static void set_creator(U creator) {
-    m_creator = creator;
-  }
-
-  /**
-   * @brief Returns the single instance of T
-   * 
-   * This method performs a call to the creator function if:
-   * - the singleton was not already created (lazy initialization)
-   * - an explicit request to reset the singleton state is made 
-   * 
-   * @param[in] reset if true resets the instance state 
-   * performing a call to the creator
-   * 
-   * @return single instance of T
-   */
-  static T& get_instance(bool reset = false) {
-    static auto pnt = std::shared_ptr<T>(nullptr);
-    if (!pnt || reset) {
-      check_creator();      
-      pnt = m_creator();
-    }
-    return *pnt;
-  }
-
-private:
-  
-  Singleton() = delete;  
-  Singleton(const Singleton&) = delete;
-  
-  /**
-   * @brief Checks if the creator is set to a valid value
-   * 
-   * @throw creator_not_set creator was not set to a valid value
-   */
-  static void check_creator() {
-    if ( !m_creator ) {
-      // Using auto with an std::stringstream is a PITA!
-      std::stringstream estream;
-      estream << "ERROR : in Singleton " << typeid(Singleton).name() << std::endl;
-      estream << "\tcreator not set" << std::endl;
-      estream << "\tMaybe you forgot to call \"set_creator\" before retrieving the singleton instance?" << std::endl;
-      throw creator_not_set( estream.str() );
-    }
-  }
-  /// Creator of the singleton object
-  static creator_type m_creator;
-};
+class Singleton;
 
 namespace {
 
@@ -152,10 +81,98 @@ initialize_creator() {
 }
 
 }
+}
 
-template<class T>
-typename Singleton<T>::creator_type Singleton<T>::m_creator = initialize_creator<T>();
+/**
+ * @brief Main namespace of the library
+ */
+namespace mwheel {
 
+/**
+ * @brief Ensures a class only has one instance, 
+ * and provides a global point of access to it
+ * 
+ * @tparam T class that should have a single instance
+ */
+template< class T>
+class Singleton {
+public:
+  /**
+   * @brief Exception thrown when the creator was not set
+   */
+  MWHEEL_EXCEPTION(creator_not_set);  
+  /// Type of the singleton creator  
+  using creator_type = std::function< std::shared_ptr<T> (void) >;
+  
+  /**
+   * @brief Returns the default creator function
+   * 
+   * Ugliness is due to the fact that the order of static object creation 
+   * must be clear 
+   * 
+   * @return reference to the creator function
+   */
+  static creator_type& get_creator() {
+    static creator_type m_creator = initialize_creator<T>();
+    return m_creator;
+  }  
+  
+  /**
+   * @brief Sets the creator that will be used to construct the single instance
+   * 
+   * @param[in] creator anything that can bind to creator_type
+   */
+  template<class U>
+  static void set_creator(U creator) {
+    get_creator() = creator;
+  }
+  
+  /**
+   * @brief Returns the single instance of T
+   * 
+   * This method performs a call to the creator function if:
+   * - the singleton was not already created (lazy initialization)
+   * - an explicit request to reset the singleton state is made 
+   * 
+   * @param[in] reset if true resets the instance state 
+   * performing a call to the creator
+   * 
+   * @return single instance of T
+   */
+  static T& get_instance(bool reset = false) {
+    static auto pnt = std::shared_ptr<T>(nullptr);
+    if (!pnt || reset) {
+      check_creator(); 
+      auto creator = get_creator();
+      pnt = creator();
+    }
+    return *pnt;
+  }
+
+private:
+  
+  Singleton() = delete;  
+  Singleton(const Singleton&) = delete;
+  
+  /**
+   * @brief Checks if the creator is set to a valid value
+   * 
+   * @throw creator_not_set creator was not set to a valid value
+   */
+  static void check_creator() {
+    auto& creator = get_creator();
+    if ( !creator ) {
+      // Using auto with an std::stringstream is a PITA!
+      std::stringstream estream;
+      estream << "ERROR : in Singleton " << typeid(Singleton).name() << std::endl;
+      estream << "\tcreator not set" << std::endl;
+      estream << "\tMaybe you forgot to call \"set_creator\" before retrieving the singleton instance?" << std::endl;
+      throw creator_not_set( estream.str() );
+    }
+  }
+  /// Creator of the singleton object
+  
+};
 }
 
 #endif	/* SINGLETON_H_20150312 */

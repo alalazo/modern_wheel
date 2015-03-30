@@ -56,7 +56,6 @@ private:
   REGISTRABLE_PRODUCT;
 };
 
-
 }
 }
 
