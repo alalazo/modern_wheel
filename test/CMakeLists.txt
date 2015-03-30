@@ -34,8 +34,6 @@ SET(
   ${CMAKE_CURRENT_SOURCE_DIR}/prototype_factory_test.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/singleton_test.cpp 
   ${CMAKE_CURRENT_BINARY_DIR}/dlmanager_test.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/fixtures/client_interface.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/fixtures/internal_extension.cpp
 )
 
 ##########
@@ -57,6 +55,7 @@ TARGET_INCLUDE_DIRECTORIES(
 TARGET_LINK_LIBRARIES(
   modern_wheel_tests
   PUBLIC  
+  internal_extension_test
   mwheel
   ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
 )

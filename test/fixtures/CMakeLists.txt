@@ -24,6 +24,26 @@
 # SOFTWARE.
 # 
 
+##########
+## Internal library (linked at compile time
+ADD_LIBRARY( 
+  internal_extension_test SHARED
+  ${CMAKE_CURRENT_SOURCE_DIR}/client_interface.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/client_interface.cpp  
+  ${CMAKE_CURRENT_SOURCE_DIR}/internal_extension.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/internal_extension.cpp
+)
+
+TARGET_INCLUDE_DIRECTORIES(
+  internal_extension_test
+  PUBLIC 
+  ${PROJECT_SOURCE_DIR}/include
+  ${PROJECT_SOURCE_DIR}/test
+)
+#########
+
+##########
+## Mimics an external extension (via shared library)
 ADD_LIBRARY( 
   plugin_extension_test SHARED
   ${CMAKE_CURRENT_SOURCE_DIR}/plugin_extension.h
@@ -36,3 +56,4 @@ TARGET_INCLUDE_DIRECTORIES(
   ${PROJECT_SOURCE_DIR}/include
   ${PROJECT_SOURCE_DIR}/test
 )
+##########
