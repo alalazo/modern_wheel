@@ -100,7 +100,7 @@ public:
   /**
    * @brief Exception thrown when the creator was not set
    */
-  MWHEEL_EXCEPTION(creator_not_set);  
+  MWHEEL_RUNTIME_EXCEPTION(creator_not_set);  
   /// Type of the singleton creator  
   using creator_type = std::function< std::shared_ptr<T> (void) >;
     

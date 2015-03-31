@@ -80,7 +80,7 @@ private:
   using PrototypeMap = std::map<TagType,StoredType >;
 public:
   /// Exception thrown by default when trying to create a type that was not registered
-  MWHEEL_EXCEPTION(tag_not_registered);  
+  MWHEEL_RUNTIME_EXCEPTION(tag_not_registered);  
   /// Type of the tag
   using tag_type = TagType;
   /// Type of the product

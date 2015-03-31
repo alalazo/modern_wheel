@@ -42,7 +42,7 @@
 #include <stdexcept>
 
 /// @brief Simplifies the way a new run-time exception type is defined
-#define MWHEEL_EXCEPTION(name) \
+#define MWHEEL_RUNTIME_EXCEPTION(name) \
 struct name : public std::runtime_error { \
     name(const std::string& what) : std::runtime_error(what){} \
 }

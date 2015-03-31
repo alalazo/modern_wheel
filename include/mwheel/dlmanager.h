@@ -59,11 +59,11 @@ namespace mwheel {
 class DLManager {
 public:
   /// @brief Exception thrown if an error occurred when loading a shared library  
-  MWHEEL_EXCEPTION(error_loading_dynamic_library);
+  MWHEEL_RUNTIME_EXCEPTION(error_loading_dynamic_library);
   /// @brief Exception thrown if an error occurred when unloading a shared library
-  MWHEEL_EXCEPTION(error_unloading_dynamic_library);
+  MWHEEL_RUNTIME_EXCEPTION(error_unloading_dynamic_library);
   /// @brief Exception thrown when trying to unload a library that was not previously loaded
-  MWHEEL_EXCEPTION(library_not_loaded);
+  MWHEEL_RUNTIME_EXCEPTION(library_not_loaded);
   
   /**
    * @brief Loads the shared library specified by the given path
