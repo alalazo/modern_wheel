@@ -47,21 +47,21 @@
  * @brief Must be used inside the public part of an interface to
  * expose the type `factory_type`
  */
-#define EXPOSE_INTERFACE_FACTORY(InterfaceType,TagType) \
+#define MWHEEL_EXPOSE_INTERFACE_FACTORY(InterfaceType,TagType) \
 using factory_type = mwheel::Singleton< mwheel::PrototypeFactory<InterfaceType,TagType> >
 
 /**
  * @brief Must be used in the private section of a concrete product to 
  * make it registrable
  */
-#define REGISTRABLE_PRODUCT \
+#define MWHEEL_REGISTRABLE_PRODUCT \
 static bool m_is_registered
 
 /**
  * @brief Must be used in the implementation file of a concrete product that 
  * will be part of a plug-in library that will be loaded/unloaded at run-time
  */
-#define REGISTER_PLUGIN_PRODUCT(ProductType,InterfaceType,tag_value) \
+#define MWHEEL_REGISTER_PLUGIN_PRODUCT(ProductType,InterfaceType,tag_value) \
 namespace { \
 mwheel::implementation::PluginUnloader unloader; \
 } \
@@ -75,7 +75,7 @@ InterfaceType::factory_type::get_instance().register_prototype(tag_value,make_sh
  * @brief Must be used in the implementation file of a concrete product that 
  * will be part of a plug-in library that will be linked at compile-time
  */
-#define REGISTER_PRODUCT(ProductType,InterfaceType,tag_value) \
+#define MWHEEL_REGISTER_PRODUCT(ProductType,InterfaceType,tag_value) \
 bool ProductType::m_is_registered( \
 InterfaceType::factory_type::get_instance().register_prototype(tag_value,make_shared<ProductType>()) \
 )

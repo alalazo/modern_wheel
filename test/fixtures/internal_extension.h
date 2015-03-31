@@ -53,7 +53,7 @@ public:
 
 private:
   int m_int = 20;
-  REGISTRABLE_PRODUCT;
+  MWHEEL_REGISTRABLE_PRODUCT;
 };
 
 }

@@ -49,7 +49,7 @@ namespace test {
 class ClientInterface {
 public:
   using clone_type = std::shared_ptr<ClientInterface>;
-  EXPOSE_INTERFACE_FACTORY(ClientInterface, std::string);
+  MWHEEL_EXPOSE_INTERFACE_FACTORY(ClientInterface, std::string);
 
   virtual int get() = 0;
   virtual clone_type clone() = 0;

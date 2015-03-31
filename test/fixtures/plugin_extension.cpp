@@ -43,7 +43,7 @@ ClientInterface::clone_type PluginExtension::clone()
   return make_shared<PluginExtension>();
 }
 
-REGISTER_PLUGIN_PRODUCT(PluginExtension, ClientInterface, "PluginExtension");
+MWHEEL_REGISTER_PLUGIN_PRODUCT(PluginExtension, ClientInterface, "PluginExtension");
 
 }
 }
