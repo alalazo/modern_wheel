@@ -103,20 +103,7 @@ public:
   MWHEEL_EXCEPTION(creator_not_set);  
   /// Type of the singleton creator  
   using creator_type = std::function< std::shared_ptr<T> (void) >;
-  
-  /**
-   * @brief Returns the default creator function
-   * 
-   * Ugliness is due to the fact that the order of static object creation 
-   * must be clear 
-   * 
-   * @return reference to the creator function
-   */
-  static creator_type& get_creator() {
-    static creator_type m_creator = initialize_creator<T>();
-    return m_creator;
-  }  
-  
+    
   /**
    * @brief Sets the creator that will be used to construct the single instance
    * 
@@ -153,6 +140,19 @@ private:
   
   Singleton() = delete;  
   Singleton(const Singleton&) = delete;
+  
+  /**
+   * @brief Returns the default creator function
+   * 
+   * Ugliness is due to the fact that the order of static object creation 
+   * must be clear 
+   * 
+   * @return reference to the creator function
+   */
+  static creator_type& get_creator() {
+    static creator_type m_creator = initialize_creator<T>();
+    return m_creator;
+  }    
   
   /**
    * @brief Checks if the creator is set to a valid value
