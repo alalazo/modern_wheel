@@ -27,6 +27,7 @@
 SET(
   MWHEEL_SOURCES
   ${CMAKE_CURRENT_SOURCE_DIR}/dlmanager.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/serializable_object.cpp
 )
 
 ADD_LIBRARY(
