@@ -41,11 +41,13 @@
 
 #include <mwheel/utility.h>
 
+#include <algorithm>
 #include <functional>
 #include <map>
 #include <memory>
 #include <sstream>
 #include <typeinfo>
+#include <vector>
 
 namespace mwheel {
 
@@ -135,6 +137,21 @@ public:
       return true;
     }
     return false;
+  }
+  
+  /**
+   * @brief Returns the list of the products that can be constructed by the factory
+   * (i.e. the tags associated with registered products)
+   * 
+   * @return list of products
+   */
+  std::vector< TagType > product_list() const {
+    std::vector< TagType > products;
+    for(const auto & x : m_prototype_map ) {
+      products.push_back( x.first );
+    }
+    sort(products.begin(),products.end());
+    return products;
   }
   
   /**

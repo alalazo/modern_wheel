@@ -97,6 +97,11 @@ BOOST_AUTO_TEST_CASE(NoParameters)
   // Registering a type under a new tag should work
   BOOST_CHECK_EQUAL(factory.register_prototype("DerivedA",a),true);
   BOOST_CHECK_EQUAL(factory.register_prototype("SDerivedA",make_shared<DerivedA>()),true);
+  // Check the construction of the list of products
+  auto products = factory.product_list();
+  BOOST_CHECK_EQUAL(products.size(),2);
+  BOOST_CHECK_EQUAL(products[0],"DerivedA");
+  BOOST_CHECK_EQUAL(products[1],"SDerivedA");  
   // Trying to register under the same tag should fail
   BOOST_CHECK_EQUAL(factory.register_prototype("DerivedA",a),false);  
   BOOST_CHECK_EQUAL(factory.register_prototype("SDerivedA",make_shared<DerivedA>()),false);
