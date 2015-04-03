@@ -170,8 +170,6 @@ private:
       throw creator_not_set( estream.str() );
     }
   }
-  /// Creator of the singleton object
-  
 };
 }
 

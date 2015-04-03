@@ -43,7 +43,7 @@ int InternalExtension::get()
   return m_int;
 }
 
-MWHEEL_REGISTER_PRODUCT(InternalExtension, ClientInterface, "InternalExtension");
+MWHEEL_REGISTER_PRODUCT(InternalExtension, "InternalExtension");
 
 }
 }

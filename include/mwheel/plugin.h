@@ -61,23 +61,23 @@ static bool m_is_registered
  * @brief Must be used in the implementation file of a concrete product that 
  * will be part of a plug-in library that will be loaded/unloaded at run-time
  */
-#define MWHEEL_REGISTER_PLUGIN_PRODUCT(ProductType,InterfaceType,tag_value) \
+#define MWHEEL_REGISTER_PLUGIN_PRODUCT(ProductType,tag_value) \
 namespace { \
 mwheel::implementation::PluginUnloader unloader; \
 } \
 bool ProductType::m_is_registered( \
-InterfaceType::factory_type::get_instance().register_prototype(tag_value,make_shared<ProductType>()) \
+ProductType::factory_type::get_instance().register_prototype(tag_value,make_shared<ProductType>()) \
 && unloader.on_unload([](){ \
-  InterfaceType::factory_type::get_instance().unregister_prototype(tag_value); \
+  ProductType::factory_type::get_instance().unregister_prototype(tag_value); \
 }))
 
 /**
  * @brief Must be used in the implementation file of a concrete product that 
  * will be part of a plug-in library that will be linked at compile-time
  */
-#define MWHEEL_REGISTER_PRODUCT(ProductType,InterfaceType,tag_value) \
+#define MWHEEL_REGISTER_PRODUCT(ProductType,tag_value) \
 bool ProductType::m_is_registered( \
-InterfaceType::factory_type::get_instance().register_prototype(tag_value,make_shared<ProductType>()) \
+ProductType::factory_type::get_instance().register_prototype(tag_value,make_shared<ProductType>()) \
 )
 
 namespace mwheel {
