@@ -44,21 +44,24 @@ BOOST_AUTO_TEST_CASE(DynamicLibraryLoading)
   auto external_path = boost::filesystem::path("@CMAKE_CURRENT_BINARY_DIR@/fixtures/libplugin_extension_test.so");
   manager.load_library(external_path);
   auto external_object = TheFactory::get_instance().create("PluginExtension");
-  BOOST_CHECK_EQUAL(external_object->get(),10);
+  BOOST_CHECK_EQUAL(external_object->get(), 10);
+  external_object = TheFactory::get_instance().create("AnotherExtension");
+  BOOST_CHECK_EQUAL(external_object->get(), 10);
   // Load an internal extension
   auto internal_object = TheFactory::get_instance().create("InternalExtension");
-  BOOST_CHECK_EQUAL(internal_object->get(),20);
+  BOOST_CHECK_EQUAL(internal_object->get(), 20);
   // Check error on non existent library
-  BOOST_CHECK_THROW(manager.load_library("this_does_not_exist.so"),mwheel::DLManager::error_loading_dynamic_library);
+  BOOST_CHECK_THROW(manager.load_library("this_does_not_exist.so"), mwheel::DLManager::error_loading_dynamic_library);
 }
+
 BOOST_AUTO_TEST_CASE(DynamicLibraryUnloading)
 {
-  auto external_path = boost::filesystem::path("@CMAKE_CURRENT_BINARY_DIR@/fixtures/libplugin_extension_test.so");  
+  auto external_path = boost::filesystem::path("@CMAKE_CURRENT_BINARY_DIR@/fixtures/libplugin_extension_test.so");
   mwheel::DLManager manager;
   // Unload non-existent library
-  BOOST_CHECK_THROW(manager.unload_library("this_does_not_exist.so"),mwheel::DLManager::library_not_loaded);
+  BOOST_CHECK_THROW(manager.unload_library("this_does_not_exist.so"), mwheel::DLManager::library_not_loaded);
   // Unload loaded library
   manager.load_library(external_path);
-  BOOST_CHECK_NO_THROW( manager.unload_library(external_path) );
+  BOOST_CHECK_NO_THROW(manager.unload_library(external_path));
 }
 BOOST_AUTO_TEST_SUITE_END()

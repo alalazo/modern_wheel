@@ -43,6 +43,8 @@
 #include <mwheel/singleton.h>
 #include <mwheel/prototype_factory.h>
 
+#include <vector>
+
 /**
  * @brief Must be used inside the public part of an interface to
  * expose the type `factory_type`
@@ -58,27 +60,62 @@ using factory_type = mwheel::Singleton< mwheel::PrototypeFactory<InterfaceType,T
 static bool m_is_registered
 
 /**
+ * @brief Preamble to register a product into a factory
+ */
+#define MWHEEL_REGISTER_PRODUCT_START(ProductType) \
+bool ProductType::m_is_registered(
+
+/**
+ * @brief Preamble to register a plugin product into a factory
+ */
+#define MWHEEL_REGISTER_PLUGIN_PRODUCT_START(ProductType) \
+namespace { \
+mwheel::implementation::PluginUnloader unloader; \
+} \
+MWHEEL_REGISTER_PRODUCT_START(ProductType)
+
+/**
+ * @brief Epilogue of the registration for a product
+ */
+#define MWHEEL_REGISTER_PRODUCT_END() )
+
+/**
+ * @brief Epilogue of the registration for a plugin product
+ */
+#define MWHEEL_REGISTER_PLUGIN_PRODUCT_END() MWHEEL_REGISTER_PRODUCT_END()
+
+/**
+ * @brief Registers a tag/object pair into the factory
+ */
+#define MWHEEL_REGISTER_TAG_OBJECT_PAIR(tag_value,object) \
+factory_type::get_instance().register_prototype(tag_value,object)
+
+/**
+ * @brief Registers a tag/plugin-object pair into the factory
+ */
+#define MWHEEL_REGISTER_TAG_PLUGIN_OBJECT_PAIR(tag_value,object) \
+MWHEEL_REGISTER_TAG_OBJECT_PAIR(tag_value,object) \
+&& unloader.on_unload([](){ \
+  factory_type::get_instance().unregister_prototype(tag_value); \
+})
+
+/**
  * @brief Must be used in the implementation file of a concrete product that 
  * will be part of a plug-in library that will be loaded/unloaded at run-time
  */
 #define MWHEEL_REGISTER_PLUGIN_PRODUCT(ProductType,tag_value) \
-namespace { \
-mwheel::implementation::PluginUnloader unloader; \
-} \
-bool ProductType::m_is_registered( \
-ProductType::factory_type::get_instance().register_prototype(tag_value,make_shared<ProductType>()) \
-&& unloader.on_unload([](){ \
-  ProductType::factory_type::get_instance().unregister_prototype(tag_value); \
-}))
+MWHEEL_REGISTER_PLUGIN_PRODUCT_START(ProductType) \
+MWHEEL_REGISTER_TAG_PLUGIN_OBJECT_PAIR(tag_value,make_shared<ProductType>()) \
+MWHEEL_REGISTER_PLUGIN_PRODUCT_END()
 
 /**
  * @brief Must be used in the implementation file of a concrete product that 
  * will be part of a plug-in library that will be linked at compile-time
  */
 #define MWHEEL_REGISTER_PRODUCT(ProductType,tag_value) \
-bool ProductType::m_is_registered( \
-ProductType::factory_type::get_instance().register_prototype(tag_value,make_shared<ProductType>()) \
-)
+MWHEEL_REGISTER_PRODUCT_START(ProductType) \
+MWHEEL_REGISTER_TAG_OBJECT_PAIR(tag_value,make_shared<ProductType>()) \
+MWHEEL_REGISTER_PRODUCT_END()
 
 namespace mwheel {
 /**
@@ -101,7 +138,7 @@ public:
    */
   template< class T>
   bool on_unload(T action) {
-    m_callback = action;
+    m_callback.push_back(action);
     return true;
   }
 
@@ -109,14 +146,16 @@ public:
    * @brief The infamous destructor
    */
   ~PluginUnloader() {
-    m_callback();
+    for (const auto & x : m_callback) {
+      x();
+    }
   }
 
 private:
   /// Type of the custom callback
   using callback_type = std::function< void(void) >;
   /// Custom callback
-  callback_type m_callback;
+  std::vector< callback_type > m_callback;
 };
 }
 }

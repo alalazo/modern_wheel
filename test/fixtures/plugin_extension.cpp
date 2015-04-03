@@ -43,7 +43,9 @@ ClientInterface::clone_type PluginExtension::clone()
   return make_shared<PluginExtension>();
 }
 
-MWHEEL_REGISTER_PLUGIN_PRODUCT(PluginExtension,"PluginExtension");
-
+MWHEEL_REGISTER_PLUGIN_PRODUCT_START(PluginExtension)
+MWHEEL_REGISTER_TAG_PLUGIN_OBJECT_PAIR("PluginExtension", make_shared<PluginExtension>()) &&
+MWHEEL_REGISTER_TAG_PLUGIN_OBJECT_PAIR("AnotherExtension", make_shared<PluginExtension>())
+MWHEEL_REGISTER_PLUGIN_PRODUCT_END();
 }
 }
