@@ -64,7 +64,7 @@ public:
    * 
    * @return reference to the element at specified location
    */
-  ContainerType::const_reference at(ContainerType::size_type position) const
+  typename ContainerType::const_reference at(typename ContainerType::size_type position) const
   {
     return m_items.at(position);
   }
@@ -77,9 +77,9 @@ public:
    * 
    * @return reference to the element at specified location
    */
-  ContainerType::reference at(ContainerType::size_type position)
+  typename ContainerType::reference at(typename ContainerType::size_type position)
   {
-    return const_cast<ContainerType::reference>( 
+    return const_cast<typename ContainerType::reference>( 
              static_cast<const CompositeBase&>(*this).m_items.at(position)
            );
   }
@@ -99,7 +99,7 @@ public:
    * 
    * @return number of elements in the container
    */
-  ContainerType::size_type size() const /* noexcept */
+  typename ContainerType::size_type size() const /* noexcept */
   {
     return m_items.size();
   }
