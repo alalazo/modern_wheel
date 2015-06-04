@@ -42,6 +42,8 @@ public:
   using clone_type = shared_ptr<Base>;
   virtual clone_type clone() = 0;
   virtual int get() = 0;
+  virtual ~Base() {
+  }
 };
 
 struct DerivedA : public Base{

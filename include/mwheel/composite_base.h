@@ -62,6 +62,8 @@ public:
    * 
    * @param[in] position specified location
    * 
+   * @throws std::out_of_range if position is out of the range of the stored items
+   * 
    * @return reference to the element at specified location
    */
   typename ContainerType::const_reference at(typename ContainerType::size_type position) const
@@ -74,6 +76,8 @@ public:
    * with bounds checking
    * 
    * @param[in] position specified location
+   * 
+   * @throws std::out_of_range if position is out of the range of the stored items
    * 
    * @return reference to the element at specified location
    */
@@ -123,7 +127,7 @@ public:
     m_items.push_back( std::forward<T>(item) );
   }
     
-private:
+protected:
   ContainerType m_items;    
 };
 }
