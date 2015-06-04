@@ -30,6 +30,7 @@ SET(
   ${CMAKE_CURRENT_SOURCE_DIR}/mwheel/plugin.h
   ${CMAKE_CURRENT_SOURCE_DIR}/mwheel/serializable_object.h
   ${CMAKE_CURRENT_SOURCE_DIR}/mwheel/memento_originator.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/mwheel/composite_base.h
   ${CMAKE_CURRENT_SOURCE_DIR}/mwheel/singleton.h
   ${CMAKE_CURRENT_SOURCE_DIR}/mwheel/prototype_factory.h
   ${CMAKE_CURRENT_SOURCE_DIR}/mwheel/dlmanager.h  
