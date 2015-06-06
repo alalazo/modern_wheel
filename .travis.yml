@@ -19,8 +19,7 @@ install:
 # configuration
 before_script:
   - mkdir build && cd build
-  - which cmake
-  - locate cmake
+  - cmake --version
   - cmake .. -DCMAKE_BUILD_TYPE:STRING=Debug
 
 # make & check
