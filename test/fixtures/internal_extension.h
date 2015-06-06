@@ -48,7 +48,7 @@ class InternalExtension : public mwheel::test::ClientInterface {
 public:
   int get() override;
 
-  ClientInterface::clone_type clone();
+  ClientInterface::clone_type clone() override;
 
 private:
   int m_int = 20;
