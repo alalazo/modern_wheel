@@ -1,21 +1,21 @@
 /**
- * 
+ *
  * Modern Wheel : all the things that shouldn't be reinvented from one project to the other
- * 
+ *
  * The MIT License (MIT)
- * 
+ *
  * Copyright (C) 2015  Massimiliano Culpo
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -47,14 +47,9 @@ namespace {
 
 struct A {
 
-  A(int a) : m_int(a)
-  {
-  }
+  A(int a) : m_int(a) {}
 
-  int get()
-  {
-    return m_int;
-  }
+  int get() { return m_int; }
 
 private:
   int m_int;
@@ -62,39 +57,29 @@ private:
 }
 
 BOOST_AUTO_TEST_SUITE(SingletonTest)
-BOOST_AUTO_TEST_CASE(ClassWithDefaultConstructor)
-{
+BOOST_AUTO_TEST_CASE(ClassWithDefaultConstructor) {
   //////////
-  // CLASS WITH DEFAULT CONSTRUCTOR  
+  // CLASS WITH DEFAULT CONSTRUCTOR
   using TheInt = mwheel::Singleton<int>;
   // Check the presence of default constructor
   BOOST_CHECK_EQUAL(TheInt::get_instance(), 0);
   // Check that the instance is not reset
-  TheInt::set_creator([]
-  {
-    return make_shared<int>(10);
-  });
+  TheInt::set_creator([] { return make_shared<int>(10); });
   BOOST_CHECK_EQUAL(TheInt::get_instance(), 0);
   // Check that the instance is reset
-  TheInt::set_creator([]
-  {
-    return make_shared<int>(11); });
+  TheInt::set_creator([] { return make_shared<int>(11); });
   BOOST_CHECK_EQUAL(TheInt::get_instance(true), 11);
   //////////
 }
 
-BOOST_AUTO_TEST_CASE(ClassWithoutDefaultConstructor)
-{
+BOOST_AUTO_TEST_CASE(ClassWithoutDefaultConstructor) {
   //////////
-  // CLASS WITHOUT DEFAULT CONSTRUCTOR  
+  // CLASS WITHOUT DEFAULT CONSTRUCTOR
   using TheA = mwheel::Singleton<A>;
   // Check that the class throws
   BOOST_CHECK_THROW(TheA::get_instance(), TheA::creator_not_set);
   // Check that the instance is reset
-  TheA::set_creator([]
-  {
-    return make_shared<A>(11);
-  });
+  TheA::set_creator([] { return make_shared<A>(11); });
   BOOST_CHECK_EQUAL(TheA::get_instance(true).get(), 11);
   //////////
 }
