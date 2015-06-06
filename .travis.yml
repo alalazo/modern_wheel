@@ -11,10 +11,11 @@ before_install:
  - sudo apt-get update -qq
  
 install:
- - sudo apt-get install -y -qq boost1.54
- - sudo apt-get install -y -qq gcc-4.8 g++-4.8
+ - sudo apt-get install -qq boost1.54
+ - sudo apt-get install -qq gcc-4.8 g++-4.8
+ - sudo apt-get install -qq gcc-4.9 g++-4.9
  - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 90
- - sudo apt-get install -y -qq cmake3
+ - sudo apt-get install -qq cmake3
  
 # configuration
 before_script:
