@@ -78,7 +78,7 @@ MESSAGE("############ COMPILER OPTIONS ############")
 ## Dependencies ##
 ##################
 
-FIND_PACKAGE( Boost 1.54 REQUIRED COMPONENTS filesystem system  )
+FIND_PACKAGE( Boost 1.55 REQUIRED COMPONENTS filesystem system  )
 
 ADD_SUBDIRECTORY( "include" )
 ADD_SUBDIRECTORY( "src" )

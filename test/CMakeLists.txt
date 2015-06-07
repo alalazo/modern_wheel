@@ -26,7 +26,7 @@
 
 ADD_SUBDIRECTORY( "fixtures" )
 
-FIND_PACKAGE( Boost 1.54 REQUIRED COMPONENTS unit_test_framework )
+FIND_PACKAGE( Boost 1.55 REQUIRED COMPONENTS unit_test_framework )
 
 CONFIGURE_FILE( dlmanager_test.cpp ${CMAKE_CURRENT_BINARY_DIR} @ONLY)
 SET( 
