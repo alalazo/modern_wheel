@@ -40,7 +40,8 @@
 #ifndef EXPECTED_H_20150929
 #define EXPECTED_H_20150929
 
-#include <exception>
+#include <stdexcept>
+#include <typeinfo>
 #include <utility>
 
 namespace mwheel {
@@ -58,15 +59,20 @@ public:
    *
    * @param[in] rhs encapsulated value
    */
-  Expected(const T &rhs) : m_value(rhs), m_got_exception(true) {}
+  Expected(const T &rhs) : m_value(rhs), m_got_exception(false) {}
 
   /**
    * @brief Constructs from a good value
    *
    * @param[in] rhs encapsulated value
    */
-  Expected(T &&rhs) : m_value(std::move(rhs)), m_got_exception(true) {}
+  Expected(T &&rhs) : m_value(std::move(rhs)), m_got_exception(false) {}
 
+  /**
+   * @brief Copy constructor
+   * 
+   * @param[in] rhs object of type expected
+   */
   Expected(const Expected &rhs) : m_got_exception(rhs.m_got_exception) {
     if (m_got_exception) {
       new (&m_exception_ptr) std::exception_ptr(rhs.m_exception_ptr);
@@ -75,6 +81,11 @@ public:
     }
   }
 
+  /**
+   * @brief Move constructor
+   * 
+   * @param[in] rhs object of type expected
+   */  
   Expected(Expected &&rhs) : m_got_exception(rhs.m_got_exception) {
     if (m_got_exception) {
       new (&m_exception_ptr) std::exception_ptr(std::move(rhs.m_exception_ptr));
@@ -97,8 +108,8 @@ public:
         // Copy exception ptr to a temporary
         auto t = std::move(rhs.m_exception_ptr);
         // Swap good value with bogus
-        new (&rhs.m_value) = std::move(m_value);
-        new (&m_exception_ptr) = std::exception_ptr(t);
+        new (&rhs.m_value) T(std::move(m_value));
+        new (&m_exception_ptr) std::exception_ptr(t);
         // Swap booleans
         std::swap(m_got_exception, rhs.m_got_exception);
       } else {
