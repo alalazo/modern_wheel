@@ -70,7 +70,7 @@ public:
 
   /**
    * @brief Copy constructor
-   * 
+   *
    * @param[in] rhs object of type expected
    */
   Expected(const Expected &rhs) : m_got_exception(rhs.m_got_exception) {
@@ -83,9 +83,9 @@ public:
 
   /**
    * @brief Move constructor
-   * 
+   *
    * @param[in] rhs object of type expected
-   */  
+   */
   Expected(Expected &&rhs) : m_got_exception(rhs.m_got_exception) {
     if (m_got_exception) {
       new (&m_exception_ptr) std::exception_ptr(std::move(rhs.m_exception_ptr));
