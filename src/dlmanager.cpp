@@ -35,10 +35,13 @@
 #include <typeinfo>
 #include <utility>
 
-#ifdef BOOST_OS_UNIX
+
+#if BOOST_OS_UNIX
 #include <dlfcn.h>
+#elif BOOST_OS_WINDOWS
+#include "Windows.h"
 #else
-#error "At present only Unix-like OS are supported"
+#error "Unsupported OS. Supported OS are : Unix-like, Windows"
 #endif
 
 using namespace std;
@@ -46,7 +49,7 @@ using namespace std;
 namespace mwheel {
 
 void DLManager::load_library(const boost::filesystem::path &library_path) {
-#ifdef BOOST_OS_UNIX
+#if BOOST_OS_UNIX
   auto handle = dlopen(library_path.c_str(), RTLD_LAZY);
   auto error_message = dlerror();
   if (error_message) {
@@ -55,12 +58,20 @@ void DLManager::load_library(const boost::filesystem::path &library_path) {
     estream << "\t" << error_message << endl;
     throw error_loading_dynamic_library(estream.str());
   }
-  m_dl_map.insert(make_pair(library_path, handle));
+#elif BOOST_OS_WINDOWS
+  auto handle = LoadLibrary( library_path.string().c_str() ); // Always ensure a conversion to const char * (boost::filesystem may be const wchar_t *)
+  if (!handle) {
+	auto error_message = GetLastError();
+	stringstream estream;
+	estream << "ERROR : cannot load shared library " << library_path << endl;
+	estream << "\t" << error_message << endl;
+	throw error_loading_dynamic_library(estream.str());
+  }
 #endif
+  m_dl_map.insert(make_pair(library_path, handle));
 }
 
 void DLManager::unload_library(const boost::filesystem::path &library_path) {
-#ifdef BOOST_OS_UNIX
   auto it = DLMap::iterator(m_dl_map.find(library_path));
   // The library was not found
   if (it == m_dl_map.end()) {
@@ -70,6 +81,7 @@ void DLManager::unload_library(const boost::filesystem::path &library_path) {
     estream << "\tDid you use a wrong name for the library to be unloaded?" << endl;
     throw library_not_loaded(estream.str());
   }
+#if BOOST_OS_UNIX
   // Close the library
   if (dlclose(it->second)) {
     auto error_message = dlerror();
@@ -78,12 +90,21 @@ void DLManager::unload_library(const boost::filesystem::path &library_path) {
     estream << "\t" << error_message << endl;
     throw error_unloading_dynamic_library(estream.str());
   }
-  m_dl_map.erase(it);
+#elif BOOST_OS_WINDOWS
+  // Close the library
+  if (FreeLibrary(static_cast<HMODULE>(it->second))) {
+	  auto error_message = GetLastError();
+	  stringstream estream;
+	  estream << "ERROR : cannot unload shared library " << library_path << endl;
+	  estream << "\t" << error_message << endl;
+	  throw error_unloading_dynamic_library(estream.str());
+  }
 #endif
+  m_dl_map.erase(it);
 }
 
 DLManager::~DLManager() {
-#ifdef BOOST_OS_UNIX
+#if BOOST_OS_UNIX
   for (auto &x : m_dl_map) {
     dlclose(x.second);
     auto error_message = dlerror();
@@ -91,6 +112,15 @@ DLManager::~DLManager() {
       cerr << "ERROR : cannot unload shared library " << x.first << endl;
       cerr << "\t" << error_message << endl;
     }
+  }
+#elif BOOST_OS_WINDOWS
+  for (auto &x : m_dl_map) {
+	FreeLibrary(static_cast<HMODULE>(x.second));
+	auto error_message = GetLastError();
+	if (error_message) {
+	  cerr << "ERROR : cannot unload shared library " << x.first << endl;
+	  cerr << "\t" << error_message << endl;
+	}
   }
 #endif
 }
