@@ -27,6 +27,7 @@
 SET( 
   MWHEEL_HEADERS_LOCAL
   ${CMAKE_CURRENT_SOURCE_DIR}/mwheel/utility.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/mwheel/expected.h
   ${CMAKE_CURRENT_SOURCE_DIR}/mwheel/plugin.h
   ${CMAKE_CURRENT_SOURCE_DIR}/mwheel/serializable_object.h
   ${CMAKE_CURRENT_SOURCE_DIR}/mwheel/memento_originator.h

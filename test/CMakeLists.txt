@@ -33,6 +33,7 @@ SET(
   TEST_SOURCES 
   ${CMAKE_CURRENT_SOURCE_DIR}/prototype_factory_test.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/singleton_test.cpp 
+  ${CMAKE_CURRENT_SOURCE_DIR}/expected_test.cpp 
   ${CMAKE_CURRENT_SOURCE_DIR}/composite_base_test.cpp 
   ${CMAKE_CURRENT_BINARY_DIR}/dlmanager_test.cpp
 )
