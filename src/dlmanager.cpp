@@ -36,7 +36,7 @@
 #include <utility>
 
 
-#if BOOST_OS_UNIX
+#if BOOST_OS_UNIX || BOOST_OS_LINUX
 #include <dlfcn.h>
 #elif BOOST_OS_WINDOWS
 #include "Windows.h"
@@ -49,7 +49,7 @@ using namespace std;
 namespace mwheel {
 
 void DLManager::load_library(const boost::filesystem::path &library_path) {
-#if BOOST_OS_UNIX
+#if BOOST_OS_UNIX || BOOST_OS_LINUX
   auto handle = dlopen(library_path.c_str(), RTLD_LAZY);
   auto error_message = dlerror();
   if (error_message) {
@@ -81,7 +81,7 @@ void DLManager::unload_library(const boost::filesystem::path &library_path) {
     estream << "\tDid you use a wrong name for the library to be unloaded?" << endl;
     throw library_not_loaded(estream.str());
   }
-#if BOOST_OS_UNIX
+#if BOOST_OS_UNIX || BOOST_OS_LINUX
   // Close the library
   if (dlclose(it->second)) {
     auto error_message = dlerror();
@@ -104,7 +104,7 @@ void DLManager::unload_library(const boost::filesystem::path &library_path) {
 }
 
 DLManager::~DLManager() {
-#if BOOST_OS_UNIX
+#if BOOST_OS_UNIX || BOOST_OS_LINUX
   for (auto &x : m_dl_map) {
     dlclose(x.second);
     auto error_message = dlerror();
