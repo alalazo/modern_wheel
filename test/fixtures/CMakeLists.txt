@@ -56,4 +56,9 @@ TARGET_INCLUDE_DIRECTORIES(
   ${PROJECT_SOURCE_DIR}/include
   ${PROJECT_SOURCE_DIR}/test
 )
+
+TARGET_LINK_LIBRARIES(
+  plugin_extension_test
+  PUBLIC internal_extension_test
+)
 ##########

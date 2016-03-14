@@ -70,6 +70,10 @@ TARGET_LINK_LIBRARIES(
   test_modern_wheel.x
   modern_wheel_tests
 )
+TARGET_COMPILE_DEFINITIONS(
+  test_modern_wheel.x
+  PUBLIC BOOST_TEST_DYN_LINK
+)
 ##########
 ADD_TEST(
   NAME run_unit_test

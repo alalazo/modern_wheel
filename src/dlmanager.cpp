@@ -4,7 +4,7 @@
  *
  * The MIT License (MIT)
  *
- * Copyright (C) 2015  Massimiliano Culpo
+ * Copyright (C) 2015,2016  Massimiliano Culpo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -61,11 +61,11 @@ void DLManager::load_library(const boost::filesystem::path &library_path) {
 #elif BOOST_OS_WINDOWS
   auto handle = LoadLibrary( library_path.string().c_str() ); // Always ensure a conversion to const char * (boost::filesystem may be const wchar_t *)
   if (!handle) {
-	auto error_message = GetLastError();
-	stringstream estream;
-	estream << "ERROR : cannot load shared library " << library_path << endl;
-	estream << "\t" << error_message << endl;
-	throw error_loading_dynamic_library(estream.str());
+    auto error_message = GetLastError();
+    stringstream estream;
+    estream << "ERROR : cannot load shared library " << library_path << endl;
+    estream << "\t" << error_message << endl;
+    throw error_loading_dynamic_library(estream.str());
   }
 #endif
   m_dl_map.insert(make_pair(library_path, handle));
@@ -93,11 +93,11 @@ void DLManager::unload_library(const boost::filesystem::path &library_path) {
 #elif BOOST_OS_WINDOWS
   // Close the library
   if (FreeLibrary(static_cast<HMODULE>(it->second))) {
-	  auto error_message = GetLastError();
-	  stringstream estream;
-	  estream << "ERROR : cannot unload shared library " << library_path << endl;
-	  estream << "\t" << error_message << endl;
-	  throw error_unloading_dynamic_library(estream.str());
+      auto error_message = GetLastError();
+      stringstream estream;
+      estream << "ERROR : cannot unload shared library " << library_path << endl;
+      estream << "\t" << error_message << endl;
+      throw error_unloading_dynamic_library(estream.str());
   }
 #endif
   m_dl_map.erase(it);
@@ -115,12 +115,12 @@ DLManager::~DLManager() {
   }
 #elif BOOST_OS_WINDOWS
   for (auto &x : m_dl_map) {
-	FreeLibrary(static_cast<HMODULE>(x.second));
-	auto error_message = GetLastError();
-	if (error_message) {
-	  cerr << "ERROR : cannot unload shared library " << x.first << endl;
-	  cerr << "\t" << error_message << endl;
-	}
+    FreeLibrary(static_cast<HMODULE>(x.second));
+    auto error_message = GetLastError();
+    if (error_message) {
+      cerr << "ERROR : cannot unload shared library " << x.first << endl;
+      cerr << "\t" << error_message << endl;
+    }
   }
 #endif
 }
