@@ -30,6 +30,7 @@
 
 #include <fixtures/client_interface.h>
 
+#define BOOST_TEST_DYN_LINK
 #include <boost/test/unit_test.hpp>
 #include <boost/test/unit_test_suite.hpp>
 
@@ -41,7 +42,7 @@ BOOST_AUTO_TEST_CASE(DynamicLibraryLoading) {
   mwheel::DLManager manager;
   // Load an external plug-in
   auto external_path =
-      boost::filesystem::path("@CMAKE_CURRENT_BINARY_DIR@/fixtures/libplugin_extension_test.so");
+      boost::filesystem::path("@CMAKE_CURRENT_BINARY_DIR@\\Debug\\plugin_extension_test.dll");
   manager.load_library(external_path);
   auto external_object = TheFactory::get_instance().create("PluginExtension");
   BOOST_CHECK_EQUAL(external_object->get(), 10);
@@ -57,7 +58,7 @@ BOOST_AUTO_TEST_CASE(DynamicLibraryLoading) {
 
 BOOST_AUTO_TEST_CASE(DynamicLibraryUnloading) {
   auto external_path =
-      boost::filesystem::path("@CMAKE_CURRENT_BINARY_DIR@/fixtures/libplugin_extension_test.so");
+      boost::filesystem::path("@CMAKE_CURRENT_BINARY_DIR@\Debug\plugin_extension_test.dll");
   mwheel::DLManager manager;
   // Unload non-existent library
   BOOST_CHECK_THROW(manager.unload_library("this_does_not_exist.so"),

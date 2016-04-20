@@ -161,7 +161,7 @@ public:
       if (m_got_exception) {
         std::rethrow_exception(m_exception_ptr);
       }
-    } catch (const E &object) {
+    } catch (const E &) {
       return true;
     } catch (...) {
       return false;

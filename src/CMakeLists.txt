@@ -2,19 +2,19 @@
 # Modern Wheel : all the things that shouldn't be reinvented from one project to the other
 #
 # The MIT License (MIT)
-# 
+#
 # Copyright (C) 2015  Massimiliano Culpo
-# 
+#
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
 # to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 # copies of the Software, and to permit persons to whom the Software is
 # furnished to do so, subject to the following conditions:
-# 
+#
 # The above copyright notice and this permission notice shall be included in all
 # copies or substantial portions of the Software.
-# 
+#
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 # FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -22,7 +22,9 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-# 
+#
+
+FIND_PACKAGE( Boost 1.60 REQUIRED COMPONENTS filesystem )
 
 SET(
   MWHEEL_SOURCES
@@ -31,9 +33,16 @@ SET(
 )
 
 ADD_LIBRARY(
-  mwheel SHARED
+  mwheel
+  SHARED
   ${MWHEEL_HEADERS}
   ${MWHEEL_SOURCES}
+)
+
+SET_TARGET_PROPERTIES(
+  mwheel
+  PROPERTIES
+  FOLDER "library"
 )
 
 ## Include directories
@@ -43,20 +52,19 @@ TARGET_INCLUDE_DIRECTORIES(
   $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/include>
 )
-TARGET_INCLUDE_DIRECTORIES(
-  mwheel
-  SYSTEM 
-  PUBLIC ${Boost_INCLUDE_DIRS}
-)
 
 ## Link libraries
 TARGET_LINK_LIBRARIES(
   mwheel
-  PUBLIC ${Boost_LIBRARIES} -ldl # WARNING : Works only for Unix
+  PUBLIC
+  Boost::boost
+  Boost::filesystem
+  Boost::dynamic_linking
+  ${CMAKE_DL_LIBS} # WARNING : Works only for Unix
 )
 
 ## Install libraries
-INSTALL( 
+INSTALL(
   TARGETS mwheel
   EXPORT ModernWheelConfig
   DESTINATION "lib"
