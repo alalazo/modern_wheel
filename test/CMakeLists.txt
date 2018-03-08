@@ -44,7 +44,9 @@ ADD_LIBRARY( modern_wheel_tests ${TEST_SOURCES})
 ## Compile definitions
 TARGET_COMPILE_DEFINITIONS(
   modern_wheel_tests
-  PUBLIC BOOST_TEST_DYN_LINK
+  PUBLIC
+  Boost::dynamic_linking
+  Boost::test
 )
 ## Include directories
 TARGET_INCLUDE_DIRECTORIES(
@@ -59,7 +61,7 @@ TARGET_LINK_LIBRARIES(
   PUBLIC  
   internal_extension_test
   mwheel
-  ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
+  Boost::unit_test_framework
 )
 ##########
 
