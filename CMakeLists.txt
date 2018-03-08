@@ -78,6 +78,11 @@ MESSAGE("############ COMPILER OPTIONS ############")
 ## Dependencies ##
 ##################
 
+SET(CMAKE_MODULE_PATH
+  ${CMAKE_MODULE_PATH}
+  "${PROJECT_SOURCE_DIR}/cmake/find"
+)
+
 FIND_PACKAGE( LibDL REQUIRED )
 FIND_PACKAGE( Boost 1.55 REQUIRED COMPONENTS filesystem system  )
 
