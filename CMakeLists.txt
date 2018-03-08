@@ -78,6 +78,7 @@ MESSAGE("############ COMPILER OPTIONS ############")
 ## Dependencies ##
 ##################
 
+FIND_PACKAGE( LibDL REQUIRED )
 FIND_PACKAGE( Boost 1.55 REQUIRED COMPONENTS filesystem system  )
 
 ADD_SUBDIRECTORY( "include" )

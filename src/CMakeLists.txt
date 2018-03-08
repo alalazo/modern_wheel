@@ -49,7 +49,7 @@ TARGET_INCLUDE_DIRECTORIES(
 ## Link libraries
 TARGET_LINK_LIBRARIES(mwheel
    PRIVATE
-       dl
+       LibDL::LibDL
    PUBLIC
        Boost::filesystem
 )
@@ -57,18 +57,18 @@ TARGET_LINK_LIBRARIES(mwheel
 ## Install libraries
 INSTALL( 
   TARGETS mwheel
-  EXPORT ModernWheelTargets
+  EXPORT ${PROJECT_NAME}Targets
   DESTINATION "lib"
 )
 
 INSTALL(
-    EXPORT ModernWheelTargets
-    NAMESPACE ModernWheel::
-    DESTINATION "share/cmake/ModernWheel"
+    EXPORT ${PROJECT_NAME}Targets
+    NAMESPACE ${PROJECT_NAME}::
+    DESTINATION "share/cmake/${PROJECT_NAME}"
 )
 
 INSTALL(
-    FILES "ModernWheelConfig.cmake"
-    DESTINATION "share/cmake/ModernWheel"
+    FILES "${PROJECT_SOURCE_DIR}/cmake/pkg/${PROJECT_NAME}Config.cmake"
+    DESTINATION "share/cmake/${PROJECT_NAME}"
 )
 
