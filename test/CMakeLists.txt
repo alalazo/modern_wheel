@@ -73,5 +73,5 @@ TARGET_LINK_LIBRARIES(
 ##########
 ADD_TEST(
   NAME run_unit_test
-  COMMAND test_modern_wheel.x --report_level=detailed --build_info --log_format=xml --log_level=all --output_format=hrf --random --log_sink=test.log
+  COMMAND test_modern_wheel.x --report_level=detailed --build_info --log_format=XML --log_level=all --output_format=HRF --random --log_sink=test.log
 )
