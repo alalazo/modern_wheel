@@ -85,6 +85,12 @@ SET(CMAKE_MODULE_PATH
 
 FIND_PACKAGE( LibDL REQUIRED )
 FIND_PACKAGE( Boost 1.55 REQUIRED COMPONENTS filesystem system  )
+IF( "${Boost_VERSION}" VERSION_GREATER_EQUAL 106600 )
+  MESSAGE(FATAL_ERROR "Boost >= 1.66 is known to be undetectable \
+by FindBoost shipped with CMake <= 3.10.2. Newer CMake versions \
+*may* work fine but please check before skipping this unless \
+you want to end up with obscure configure errors.")
+ENDIF()
 
 ADD_SUBDIRECTORY( "include" )
 ADD_SUBDIRECTORY( "src" )
