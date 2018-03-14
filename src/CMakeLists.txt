@@ -36,6 +36,8 @@ ADD_LIBRARY(
   ${MWHEEL_SOURCES}
 )
 
+ADD_LIBRARY(ModerWheel::mwheel ALIAS mwheel)
+
 ## Include directories
 TARGET_INCLUDE_DIRECTORIES(
   mwheel
@@ -43,23 +45,30 @@ TARGET_INCLUDE_DIRECTORIES(
   $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/include>
 )
-TARGET_INCLUDE_DIRECTORIES(
-  mwheel
-  SYSTEM 
-  PUBLIC ${Boost_INCLUDE_DIRS}
-)
 
 ## Link libraries
-TARGET_LINK_LIBRARIES(
-  mwheel
-  PUBLIC ${Boost_LIBRARIES} -ldl # WARNING : Works only for Unix
+TARGET_LINK_LIBRARIES(mwheel
+   PRIVATE
+       LibDL::LibDL
+   PUBLIC
+       Boost::filesystem
 )
 
 ## Install libraries
 INSTALL( 
   TARGETS mwheel
-  EXPORT ModernWheelConfig
+  EXPORT ${PROJECT_NAME}Targets
   DESTINATION "lib"
 )
 
-INSTALL(EXPORT ModernWheelConfig DESTINATION "lib")
+INSTALL(
+    EXPORT ${PROJECT_NAME}Targets
+    NAMESPACE ${PROJECT_NAME}::
+    DESTINATION "share/cmake/${PROJECT_NAME}"
+)
+
+INSTALL(
+    FILES "${PROJECT_SOURCE_DIR}/cmake/pkg/${PROJECT_NAME}Config.cmake"
+    DESTINATION "share/cmake/${PROJECT_NAME}"
+)
+
