@@ -35,6 +35,7 @@ SET(
   ${CMAKE_CURRENT_SOURCE_DIR}/singleton_test.cpp 
   ${CMAKE_CURRENT_SOURCE_DIR}/expected_test.cpp 
   ${CMAKE_CURRENT_SOURCE_DIR}/composite_base_test.cpp 
+  ${CMAKE_CURRENT_SOURCE_DIR}/decorator_test.cpp
   ${CMAKE_CURRENT_BINARY_DIR}/dlmanager_test.cpp
 )
 
