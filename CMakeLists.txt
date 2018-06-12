@@ -87,7 +87,9 @@ SET(CMAKE_MODULE_PATH
 
 FIND_PACKAGE( LibDL REQUIRED )
 FIND_PACKAGE( Boost 1.55 REQUIRED COMPONENTS filesystem system  )
-IF( ("${Boost_VERSION}" VERSION_GREATER "106600") OR ("${Boost_VERSION}" VERSION_EQUAL "106600") )
+IF( ${CMAKE_VERSION} VERSION_LESS "3.11.0" AND (
+      "${Boost_VERSION}" VERSION_GREATER "106600" OR
+      "${Boost_VERSION}" VERSION_EQUAL "106600"))
   MESSAGE(FATAL_ERROR "Boost >= 1.66 is known to be undetectable \
 by FindBoost shipped with CMake <= 3.10.2. Newer CMake versions \
 *may* work fine but please check before skipping this unless \
