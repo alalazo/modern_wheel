@@ -262,7 +262,7 @@ BOOST_AUTO_TEST_CASE(DecoratorFreeFunctionOverload) {
     f_wrapped(0);
 }
 
-BOOST_AUTO_TEST_CASE(DecoratorFences) {
+BOOST_AUTO_TEST_CASE(DecoratorOptionalFences) {
     int sentry = 0;
     int before_sentry = 0;
     int after_sentry = 0;
@@ -271,28 +271,28 @@ BOOST_AUTO_TEST_CASE(DecoratorFences) {
     auto pass_after = [&after_sentry]{after_sentry += 3;};
     auto pass_wrapped = mwheel::make_decorator(pass, pass_before, pass_after);
     pass_wrapped(1);
-    assert(sentry == 1);
-    assert(before_sentry == 2);
-    assert(after_sentry == 3);
+    BOOST_CHECK_EQUAL(sentry, 1);
+    BOOST_CHECK_EQUAL(before_sentry, 2);
+    BOOST_CHECK_EQUAL(after_sentry, 3);
     pass_wrapped(1);
-    assert(sentry == 2);
-    assert(before_sentry == 4);
-    assert(after_sentry == 6);
+    BOOST_CHECK_EQUAL(sentry, 2);
+    BOOST_CHECK_EQUAL(before_sentry, 4);
+    BOOST_CHECK_EQUAL(after_sentry, 6);
     pass_wrapped = mwheel::make_decorator(pass, nullptr, pass_after);
     pass_wrapped(1);
-    assert(sentry == 3);
-    assert(before_sentry == 4);
-    assert(after_sentry == 9);
+    BOOST_CHECK_EQUAL(sentry, 3);
+    BOOST_CHECK_EQUAL(before_sentry, 4);
+    BOOST_CHECK_EQUAL(after_sentry, 9);
     pass_wrapped = mwheel::make_decorator(pass, pass_before);
     pass_wrapped(1);
-    assert(sentry == 4);
-    assert(before_sentry == 6);
-    assert(after_sentry == 9);
+    BOOST_CHECK_EQUAL(sentry, 4);
+    BOOST_CHECK_EQUAL(before_sentry, 6);
+    BOOST_CHECK_EQUAL(after_sentry, 9);
     pass_wrapped = mwheel::make_decorator(pass);
     pass_wrapped(1);
-    assert(sentry == 5);
-    assert(before_sentry == 6);
-    assert(after_sentry == 9);
+    BOOST_CHECK_EQUAL(sentry, 5);
+    BOOST_CHECK_EQUAL(before_sentry, 6);
+    BOOST_CHECK_EQUAL(after_sentry, 9);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
