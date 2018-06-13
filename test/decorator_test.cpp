@@ -289,7 +289,7 @@ BOOST_AUTO_TEST_CASE(DecoratorMemberFunctionOverload) {
 BOOST_AUTO_TEST_CASE(DecoratorBind) {
     auto nullary_ref = std::bind(free_function_template<int>, 100);
     // manually resolve overload of std::bind::operator() via explicit template parameter
-    auto f_wrapped = mwheel::detail::decorator<int()>(nullary_ref);
+    auto f_wrapped = mwheel::decorator<int()>(nullary_ref);
     auto res = f_wrapped();
     BOOST_CHECK_EQUAL(res, 200);
 }

@@ -53,8 +53,6 @@ namespace mwheel {
 /// for filtering/tracing purposes.
 using callback_type = void();
 
-namespace detail {
-
 template <typename>
 struct decorator;
 
@@ -110,6 +108,8 @@ struct decorator<ReturnType(ArgTypes...)> {
     callback_ptr_type m_after;
 };
 
+namespace detail {
+
 template <typename>
 struct callable_traits;
 
@@ -164,7 +164,7 @@ using argument_t = typename detail::callable_traits<F>::template arg<narg>::type
 
 /// @brief
 template <typename F>
-using decorator_t = detail::decorator<callable_t<F>>;
+using decorator_t = decorator<callable_t<F>>;
 
 // clang-format off
 
