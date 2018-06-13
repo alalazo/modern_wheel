@@ -56,9 +56,16 @@ using callback_type = void();
 template <typename>
 struct decorator;
 
+/// Wraps a target callable and optionally attaches callable
+/// fences, invoked before and after the wrapped target.
+/// Is a callable type itself, mimicking the target's abstract
+/// signature.
 template <typename ReturnType, typename... ArgTypes>
 struct decorator<ReturnType(ArgTypes...)> {
+    /// The type of the wrapper owning the target callable reference
     using target_ptr_type = std::function<ReturnType(ArgTypes...)>;
+
+    /// The type of the wrapper owning the fence callable references
     using callback_ptr_type = std::function<callback_type>;
 
     // clang-format off
@@ -76,13 +83,10 @@ struct decorator<ReturnType(ArgTypes...)> {
           m_before(std::move(before)),
           m_after(std::move(after)){};
 
-    
-
-    /// @brief Calls the wrapped callable forwarding all parameters
+    /// @brief Calls the wrapped callable forwarding all parameters.
     /// This operator has the same signature as wrapped's,
     /// instantiation on wrong calls fails at the higher level so
     /// compilation errors should be much more intuitive.
-    /// @todo add a static assertion when std::is_invokable is available
     template <typename R = ReturnType>
     typename std::enable_if<!std::is_same<R, void>::value, R>::type
     operator()(ArgTypes&&... args) const {
@@ -136,15 +140,17 @@ template <typename ReturnType, typename ObjectType, typename... ArgTypes>
 struct callable_traits<ReturnType (ObjectType::*)(ArgTypes...) const>
     : public callable_traits<ReturnType(ArgTypes...)> {};
 
-// callable_traits<abstract callable signature>
-// (e.g.: callable_traits<F>::type is meant to be used as T in
-// std::function<T>)
+/// Trait type exposing the abstract signature of the callable type
 template <typename ReturnType, typename... ArgTypes>
 struct callable_traits<ReturnType(ArgTypes...)> {
+
+    /// Callable arity
     static constexpr auto arity = sizeof...(ArgTypes);
 
+    /// Callable abstract signature
     using type = ReturnType(ArgTypes...);
 
+    /// Given an argument index i, returns its type
     template <std::size_t i>
     struct arg {
         static_assert(i < arity, "argument index out of arity bounds");
@@ -154,15 +160,15 @@ struct callable_traits<ReturnType(ArgTypes...)> {
 
 }  // namespace detail
 
-/// @brief
+/// Given a callable type F, returns its abstract signature
 template <typename F>
 using callable_t = typename detail::callable_traits<F>::type;
 
-/// @brief
+/// Given a callable type F, returns the type of its argument of index narg
 template <typename F, std::size_t narg>
 using argument_t = typename detail::callable_traits<F>::template arg<narg>::type;
 
-/// @brief
+/// Given a callable type F, returns its decorator type
 template <typename F>
 using decorator_t = decorator<callable_t<F>>;
 
