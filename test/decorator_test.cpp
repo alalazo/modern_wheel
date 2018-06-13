@@ -65,29 +65,29 @@ BOOST_AUTO_TEST_CASE(TraitsFreeFunctionTemplate) {
     using func_volatile_const_int_ref_t = decltype(free_function_template<volatile const int&>);
     // callable_t
     constexpr auto type_is_same_int = std::is_same<
-        mwheel::detail::callable_traits<func_int_t>::type,
+        mwheel::implementation::callable_traits<func_int_t>::type,
         mwheel::callable_t<func_int_t>>::value;
     BOOST_CHECK_EQUAL(type_is_same_int, true);
     constexpr auto type_is_same_const_int = std::is_same<
-        mwheel::detail::callable_traits<func_const_int_t>::type,
+        mwheel::implementation::callable_traits<func_const_int_t>::type,
         mwheel::callable_t<func_const_int_t>>::value;
     BOOST_CHECK_EQUAL(type_is_same_const_int, true);
     constexpr auto type_is_same_const_int_ref = std::is_same<
-        mwheel::detail::callable_traits<func_const_int_ref_t>::type,
+        mwheel::implementation::callable_traits<func_const_int_ref_t>::type,
         mwheel::callable_t<func_const_int_ref_t>>::value;
     BOOST_CHECK_EQUAL(type_is_same_const_int_ref, true);
     constexpr auto type_is_same_volatile_const_int_ref = std::is_same<
-        mwheel::detail::callable_traits<func_volatile_const_int_ref_t>::type,
+        mwheel::implementation::callable_traits<func_volatile_const_int_ref_t>::type,
         mwheel::callable_t<func_volatile_const_int_ref_t>>::value;
     BOOST_CHECK_EQUAL(type_is_same_volatile_const_int_ref, true);
     // arity
-    constexpr auto arity_int = mwheel::detail::callable_traits<func_int_t>::arity;
+    constexpr auto arity_int = mwheel::implementation::callable_traits<func_int_t>::arity;
     BOOST_CHECK_EQUAL(arity_int, 1);
-    constexpr auto arity_const_int = mwheel::detail::callable_traits<func_const_int_t>::arity;
+    constexpr auto arity_const_int = mwheel::implementation::callable_traits<func_const_int_t>::arity;
     BOOST_CHECK_EQUAL(arity_const_int, 1);
-    constexpr auto arity_const_int_ref = mwheel::detail::callable_traits<func_const_int_ref_t>::arity;
+    constexpr auto arity_const_int_ref = mwheel::implementation::callable_traits<func_const_int_ref_t>::arity;
     BOOST_CHECK_EQUAL(arity_const_int_ref, 1);
-    constexpr auto arity_volatile_const_int_ref = mwheel::detail::callable_traits<func_volatile_const_int_ref_t>::arity;
+    constexpr auto arity_volatile_const_int_ref = mwheel::implementation::callable_traits<func_volatile_const_int_ref_t>::arity;
     BOOST_CHECK_EQUAL(arity_volatile_const_int_ref, 1);
     // argument_t
     constexpr auto arg_0_is_int = std::is_same<mwheel::argument_t<func_int_t, 0>, int>::value;
@@ -105,29 +105,29 @@ BOOST_AUTO_TEST_CASE(TraitsFunctor) {
     using l_volatile_const_int_ref_t = decltype(l_volatile_const_int_ref);
     // callable_t
     constexpr auto type_is_same_int = std::is_same<
-        mwheel::detail::callable_traits<l_int_t>::type,
+        mwheel::implementation::callable_traits<l_int_t>::type,
         mwheel::callable_t<l_int_t>>::value;
     BOOST_CHECK_EQUAL(type_is_same_int, true);
     constexpr auto type_is_same_const_int = std::is_same<
-        mwheel::detail::callable_traits<l_const_int_t>::type,
+        mwheel::implementation::callable_traits<l_const_int_t>::type,
         mwheel::callable_t<l_const_int_t>>::value;
     BOOST_CHECK_EQUAL(type_is_same_const_int, true);
     constexpr auto type_is_same_const_int_ref = std::is_same<
-        mwheel::detail::callable_traits<l_const_int_ref_t>::type,
+        mwheel::implementation::callable_traits<l_const_int_ref_t>::type,
         mwheel::callable_t<l_const_int_ref_t>>::value;
     BOOST_CHECK_EQUAL(type_is_same_const_int_ref, true);
     constexpr auto type_is_same_volatile_const_int_ref = std::is_same<
-        mwheel::detail::callable_traits<l_volatile_const_int_ref_t>::type,
+        mwheel::implementation::callable_traits<l_volatile_const_int_ref_t>::type,
         mwheel::callable_t<l_volatile_const_int_ref_t>>::value;
     BOOST_CHECK_EQUAL(type_is_same_volatile_const_int_ref, true);
     // arity
-    constexpr auto arity_int = mwheel::detail::callable_traits<l_int_t>::arity;
+    constexpr auto arity_int = mwheel::implementation::callable_traits<l_int_t>::arity;
     BOOST_CHECK_EQUAL(arity_int, 1);
-    constexpr auto arity_const_int = mwheel::detail::callable_traits<l_const_int_t>::arity;
+    constexpr auto arity_const_int = mwheel::implementation::callable_traits<l_const_int_t>::arity;
     BOOST_CHECK_EQUAL(arity_const_int, 1);
-    constexpr auto arity_const_int_ref = mwheel::detail::callable_traits<l_const_int_ref_t>::arity;
+    constexpr auto arity_const_int_ref = mwheel::implementation::callable_traits<l_const_int_ref_t>::arity;
     BOOST_CHECK_EQUAL(arity_const_int_ref, 1);
-    constexpr auto arity_volatile_const_int_ref = mwheel::detail::callable_traits<l_volatile_const_int_ref_t>::arity;
+    constexpr auto arity_volatile_const_int_ref = mwheel::implementation::callable_traits<l_volatile_const_int_ref_t>::arity;
     BOOST_CHECK_EQUAL(arity_volatile_const_int_ref, 1);
     // argument_t
     constexpr auto arg_0_is_int = std::is_same<mwheel::argument_t<l_int_t, 0>, int>::value;
@@ -147,12 +147,12 @@ BOOST_AUTO_TEST_CASE(TraitsArityFunctor) {
     using f3_t = decltype(f3);
     using f4_t = decltype(f4);
     using f5_t = decltype(f5);
-    constexpr auto arity_f0 = mwheel::detail::callable_traits<f0_t>::arity;
-    constexpr auto arity_f1 = mwheel::detail::callable_traits<f1_t>::arity;
-    constexpr auto arity_f2 = mwheel::detail::callable_traits<f2_t>::arity;
-    constexpr auto arity_f3 = mwheel::detail::callable_traits<f3_t>::arity;
-    constexpr auto arity_f4 = mwheel::detail::callable_traits<f4_t>::arity;
-    constexpr auto arity_f5 = mwheel::detail::callable_traits<f5_t>::arity;
+    constexpr auto arity_f0 = mwheel::implementation::callable_traits<f0_t>::arity;
+    constexpr auto arity_f1 = mwheel::implementation::callable_traits<f1_t>::arity;
+    constexpr auto arity_f2 = mwheel::implementation::callable_traits<f2_t>::arity;
+    constexpr auto arity_f3 = mwheel::implementation::callable_traits<f3_t>::arity;
+    constexpr auto arity_f4 = mwheel::implementation::callable_traits<f4_t>::arity;
+    constexpr auto arity_f5 = mwheel::implementation::callable_traits<f5_t>::arity;
     BOOST_CHECK_EQUAL(arity_f0, 0);
     BOOST_CHECK_EQUAL(arity_f1, 1);
     BOOST_CHECK_EQUAL(arity_f2, 2);

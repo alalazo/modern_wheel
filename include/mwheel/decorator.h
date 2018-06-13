@@ -112,7 +112,7 @@ struct decorator<ReturnType(ArgTypes...)> {
     callback_ptr_type m_after;
 };
 
-namespace detail {
+namespace implementation {
 
 template <typename>
 struct callable_traits;
@@ -158,15 +158,15 @@ struct callable_traits<ReturnType(ArgTypes...)> {
     };
 };
 
-}  // namespace detail
+}  // namespace implementation
 
 /// Given a callable type F, returns its abstract signature
 template <typename F>
-using callable_t = typename detail::callable_traits<F>::type;
+using callable_t = typename implementation::callable_traits<F>::type;
 
 /// Given a callable type F, returns the type of its argument of index narg
 template <typename F, std::size_t narg>
-using argument_t = typename detail::callable_traits<F>::template arg<narg>::type;
+using argument_t = typename implementation::callable_traits<F>::template arg<narg>::type;
 
 /// Given a callable type F, returns its decorator type
 template <typename F>
