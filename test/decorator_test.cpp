@@ -27,7 +27,18 @@
 #include <boost/test/unit_test.hpp>
 #include <boost/test/unit_test_suite.hpp>
 
+#include <functional>
 #include <type_traits>
+
+struct Counter {
+    int call_count = 0;
+
+    void poke(int) {
+        ++call_count;
+    }
+
+    void poke() {}
+};
 
 template <typename T>
 auto free_function_template(T value) -> decltype(value * 2) {
@@ -256,10 +267,31 @@ BOOST_AUTO_TEST_CASE(DecoratorFunctor) {
     BOOST_CHECK_EQUAL(f_after_call_count, 12);
 }
 
-BOOST_AUTO_TEST_CASE(DecoratorFreeFunctionOverload) {
+BOOST_AUTO_TEST_CASE(MakeDecoratorFreeFunctionOverload) {
     void (&selected_overload)(float)  = free_function_overloaded;
     auto f_wrapped = mwheel::make_decorator(selected_overload);
     f_wrapped(0);
+}
+
+BOOST_AUTO_TEST_CASE(DecoratorMemberFunctionOverload) {
+    Counter c{};
+    // manually resolve overload
+    auto poke_ref = [] (Counter& x) {return x.poke(0);};
+    auto f_wrapped = mwheel::make_decorator(poke_ref);
+    f_wrapped(c);
+    BOOST_CHECK_EQUAL(c.call_count, 1);
+    f_wrapped(c);
+    BOOST_CHECK_EQUAL(c.call_count, 2);
+    f_wrapped(c);
+    BOOST_CHECK_EQUAL(c.call_count, 3);
+}
+
+BOOST_AUTO_TEST_CASE(DecoratorBind) {
+    auto nullary_ref = std::bind(free_function_template<int>, 100);
+    // manually resolve overload of std::bind::operator() via explicit template parameter
+    auto f_wrapped = mwheel::detail::decorator<int()>(nullary_ref);
+    auto res = f_wrapped();
+    BOOST_CHECK_EQUAL(res, 200);
 }
 
 BOOST_AUTO_TEST_CASE(DecoratorOptionalFences) {
