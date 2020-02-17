@@ -58,6 +58,7 @@ public:
   virtual clone_type clone(int a) = 0;
   virtual clone_type clone(int a, int b) = 0;
   virtual int get() = 0;
+  virtual ~BaseMultiParms() {}
 };
 
 class DerivedSum : public BaseMultiParms {
